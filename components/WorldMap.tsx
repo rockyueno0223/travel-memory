@@ -2,13 +2,18 @@
 
 import React from 'react';
 import { ComposableMap, Geographies, Geography, GeographyProps, GeographyPaths, Sphere, Graticule } from 'react-simple-maps';
+import { Tooltip } from "react-tooltip";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 // Sample data of countries in the "database"
 const countriesInDatabase = ['United States', 'Canada', 'Mexico', 'France', 'Germany'];
 
-const WorldMap: React.FC = () => {
+interface WorldMapProps {
+  setTooltipContent: (content: string) => void;
+}
+
+const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent }) => {
   return (
     <ComposableMap projectionConfig={{
       rotate: [-10, 0, 0],
@@ -26,6 +31,12 @@ const WorldMap: React.FC = () => {
               <Geography
                 key={geo.rsmKey}
                 geography={geo}
+                onMouseEnter={() => {
+                  setTooltipContent(`${geo.properties.name}`);
+                }}
+                onMouseLeave={() => {
+                  setTooltipContent("");
+                }}
                 //onClick={() => handleCountryClick(geo)}
                 style={{
                   default: { fill: isInDatabase ? '#1FA2D5' : '#E5F4F7'}, // Blue for countries in the database, light grey for others
@@ -34,6 +45,8 @@ const WorldMap: React.FC = () => {
                 }}
                 stroke='#fff'
                 strokeWidth={0.5}
+                data-tooltip-id="world-map-tooltip"
+                data-tooltip-content={geo.properties.name}
               />
             );
           })

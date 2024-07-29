@@ -1,6 +1,7 @@
+import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import WorldMap from "@/components/WorldMap"
+import TopLayout from "@/components/TopLayout";
 
 export default async function Top() {
   const supabase = createClient();
@@ -14,8 +15,8 @@ export default async function Top() {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <WorldMap />
+    <div className="w-full">
+      <TopLayout />
     </div>
   )
 }
