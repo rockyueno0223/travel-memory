@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ComposableMap, Geographies, Geography, GeographyProps, GeographyPaths, Sphere, Graticule } from 'react-simple-maps';
+import { ComposableMap, Geographies, Geography, Sphere, Graticule } from 'react-simple-maps';
 import { Tooltip } from "react-tooltip";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -19,10 +19,10 @@ const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent }) => {
       rotate: [-10, 0, 0],
       scale: 147
     }}>
-      <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
+      <Sphere id="rsm-sphere" fill="transparent" stroke="#E4E5E6" strokeWidth={0.5} />
       <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
       <Geographies geography={geoUrl}>
-        {({ geographies }: GeographyPaths) =>
+        {({ geographies }) =>
           geographies.map((geo: any) => {
             const countryName = geo.properties.name;
             const isInDatabase = countriesInDatabase.includes(countryName);
