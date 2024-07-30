@@ -39,7 +39,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent }) => {
                 }}
                 //onClick={() => handleCountryClick(geo)}
                 style={{
-                  default: { fill: isInDatabase ? '#1FA2D5' : '#E5F4F7'}, // Blue for countries in the database, light grey for others
+                  default: { fill: isInDatabase ? '#1FA2D5' : '#E5F4F7'},
                   hover: { fill: '#095A8C' },
                   pressed: { fill: '#095A8C' },
                 }}
