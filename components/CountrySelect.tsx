@@ -45,7 +45,7 @@ const CountrySelect: React.FC<CountrySelectProps> = () => {
       // Clear any existing error
       setError(null);
 
-      //router.push(`/memories?countryCode=${selectedCountry.value}`);
+      router.push(`/memoryManager?action=add&countryCode=${selectedCountry.value}`);
     } else {
       console.error("No country selected");
       setError('Please select country');
