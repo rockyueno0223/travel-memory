@@ -4,6 +4,8 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
+import CountryItem from "@/components/CountryItem";
+
 interface MemoryManagerLayoutProps {}
 
 interface Country {
@@ -34,7 +36,7 @@ const TopLayout: React.FC<MemoryManagerLayoutProps> = () => {
       <p>{action}</p>
       <ul>
         {countries.map((country, index) => (
-          <li key={index}>CountryCode: {country.countryCode} Name:{country.name}</li>
+          <CountryItem key={index} action={action} country={country} />
         ))}
       </ul>
     </div>
