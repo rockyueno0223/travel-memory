@@ -1,21 +1,42 @@
 'use client';
 
 import React from "react";
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-interface MemoryManagerLayoutProps {
-  formData: {
-    action: string;
-    countryCode: string;
-  }
+interface MemoryManagerLayoutProps {}
+
+interface Country {
+  countryCode: string;
+  name: string;
 }
 
-const TopLayout: React.FC<MemoryManagerLayoutProps> = ({ formData }) => {
+const TopLayout: React.FC<MemoryManagerLayoutProps> = () => {
+  const searchParams = useSearchParams();
+  const [action, setAction] = useState<string | null>(null);
+  const [countries, setCountries] = useState<Country[]>([]);
+
+  useEffect(() => {
+    // Get action param
+    const actionParam = searchParams.get('action');
+    setAction(actionParam);
+    // Get countries param
+    const countriesParam = searchParams.get('countries');
+    if (countriesParam) {
+      const parsedCountries: Country[] = JSON.parse(decodeURIComponent(countriesParam));
+      setCountries(parsedCountries);
+    }
+  }, [searchParams]);
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      MemoryManager
-      {formData.action}
-      {formData.countryCode}
+      <h1>Memories Page</h1>
+      <p>{action}</p>
+      <ul>
+        {countries.map((country, index) => (
+          <li key={index}>CountryCode: {country.countryCode} Name:{country.name}</li>
+        ))}
+      </ul>
     </div>
   )
 }

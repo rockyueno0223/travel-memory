@@ -38,6 +38,17 @@ const CountrySelect: React.FC<CountrySelectProps> = () => {
     fetchData();
   }, []);
 
+  const getCountryName = (label: string): string => {
+    return label.split(' ').slice(1).join(' ');
+  };
+
+  const formatCountryObj = (countryOption: CountryOption) => {
+    return {
+      countryCode: countryOption.value,
+      name: getCountryName(countryOption.label)
+    };
+  }
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -45,7 +56,13 @@ const CountrySelect: React.FC<CountrySelectProps> = () => {
       // Clear any existing error
       setError(null);
 
-      router.push(`/memoryManager?action=add&countryCode=${selectedCountry.value}`);
+      // Format country object
+      const formattedCountry = formatCountryObj(selectedCountry);
+      // Replace selected country with array
+      const formattedCountries = [formattedCountry];
+      // Encode the array to pass as param
+      const queryParams = encodeURIComponent(JSON.stringify(formattedCountries));
+      router.push(`/memoryManager?action=add&countries=${queryParams}`);
     } else {
       console.error("No country selected");
       setError('Please select country');

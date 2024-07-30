@@ -3,12 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import MemoryManagerLayout from "@/components/MemoryManagerLayout";
 
-export default async function MemoryManager({ searchParams, }: {
-  searchParams: {
-    action: string,
-    countryCode: string
-  };
-}) {
+export default async function MemoryManager() {
   const supabase = createClient();
 
   const {
@@ -21,7 +16,7 @@ export default async function MemoryManager({ searchParams, }: {
 
   return (
     <div className="w-full">
-      <MemoryManagerLayout formData={searchParams} />
+      <MemoryManagerLayout />
     </div>
   )
 }
