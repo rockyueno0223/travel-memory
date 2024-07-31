@@ -8,23 +8,24 @@ interface Country {
   name: string;
 };
 
-interface countryItemProps {
-  action: string | null
-  country: Country
-};
+interface MemoryFormProps {};
 
-const MemoryItem: React.FC<countryItemProps> = ({action, country}) => {
+const MemoryForm: React.FC<MemoryFormProps> = () => {
   const router = useRouter();
 
   return (
     <div className='flex-1 w-full flex gap-2 items-center h-14'>
-      <div className='w-1/3'>img</div>
+      <div className='w-1/3'>
+        <input type="file" name="image" id="image" />
+      </div>
       <div className='w-2/3'>
-        <div>This is comment.</div>
+        <div>
+          <textarea name="comment" id="comment" rows={3} className='w-full'></textarea>
+        </div>
         <button type="submit" className='block h-8 w-20 text-sm text-white bg-[#095A8C] rounded'>Click</button>
       </div>
     </div>
   );
 };
 
-export default MemoryItem;
+export default MemoryForm;
