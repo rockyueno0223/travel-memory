@@ -18,7 +18,7 @@ interface CountrySelectProps {};
 
 const CountrySelect: React.FC<CountrySelectProps> = () => {
   const router = useRouter();
-  const [countries, setCountries] = useState<CountryOption[]>([]);
+  const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,7 +27,7 @@ const CountrySelect: React.FC<CountrySelectProps> = () => {
       try {
         const response = await fetch("https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code");
         const data: FetchedData = await response.json();
-        setCountries(data.countries);
+        setCountryOptions(data.countries);
         setSelectedCountry(data.userSelectValue);
 
       } catch (error) {
@@ -73,7 +73,7 @@ const CountrySelect: React.FC<CountrySelectProps> = () => {
     <form className='max-w-full flex gap-2 px-0.5' onSubmit={handleSubmit}>
       {error && <p className='text-red-500'>{error}</p>}
       <Select
-        options={countries}
+        options={countryOptions}
         value={selectedCountry}
         onChange={(selectedOption) => setSelectedCountry(selectedOption)}
         className='w-80'
