@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 interface Country {
   name: string;
   country_code_alpha2: string;
-  un_code: number;
+  un_code: string;
 };
 
 interface MemoryFormProps {};

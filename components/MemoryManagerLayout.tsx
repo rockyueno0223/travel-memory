@@ -11,7 +11,7 @@ interface MemoryManagerLayoutProps {}
 interface Country {
   name: string;
   country_code_alpha2: string;
-  un_code: number;
+  un_code: string;
 }
 
 const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {

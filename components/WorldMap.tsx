@@ -7,13 +7,30 @@ import { Tooltip } from "react-tooltip";
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 // Sample data of countries in the "database"
-const countriesInDatabase = ['United States', 'Canada', 'Mexico', 'France', 'Germany'];
+const countriesInDatabase = [
+  { id: 1, user_id: 1, country_un_code: "840", comment: 'test1' },
+  { id: 2, user_id: 1, country_un_code: "392", comment: 'test2' },
+  { id: 3, user_id: 1, country_un_code: "276", comment: 'test3' }
+];
 
 interface WorldMapProps {
   setTooltipContent: (content: string) => void;
+  handleSubmitFromMap: (code: string, content: string) => void;
 }
 
-const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent }) => {
+const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent, handleSubmitFromMap }) => {
+
+  const handleMapSubmit = (clickedUnCode: string, inDatabase: boolean) => {
+    let formAction = "";
+    if (inDatabase) {
+      formAction = "edit";
+    } else {
+      formAction = "add";
+    }
+
+    handleSubmitFromMap(clickedUnCode, formAction);
+  }
+
   return (
     <ComposableMap projectionConfig={{
       rotate: [-10, 0, 0],
@@ -24,8 +41,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent }) => {
       <Geographies geography={geoUrl}>
         {({ geographies }) =>
           geographies.map((geo: any) => {
-            const countryName = geo.properties.name;
-            const isInDatabase = countriesInDatabase.includes(countryName);
+            const isInDatabase = countriesInDatabase.some(country => country.country_un_code === geo.id);
 
             return (
               <Geography
@@ -37,7 +53,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent }) => {
                 onMouseLeave={() => {
                   setTooltipContent("");
                 }}
-                //onClick={() => handleCountryClick(geo)}
+                onClick={() => handleMapSubmit(geo.id, isInDatabase)}
                 style={{
                   default: { fill: isInDatabase ? '#1FA2D5' : '#E5F4F7'},
                   hover: { fill: '#095A8C' },

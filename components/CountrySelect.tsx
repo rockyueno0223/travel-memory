@@ -22,10 +22,10 @@ interface CountrySelectProps {
   setCountrySource: (content: string) => void;
   selectedCountry: CountryOption | null;
   setSelectedCountry: (content: CountryOption | null) => void;
-  handleSubmit: (event: React.FormEvent) => void;
+  handleSubmitFromSelect: (event: React.FormEvent) => void;
 };
 
-const CountrySelect: React.FC<CountrySelectProps> = ({setCountrySource, selectedCountry, setSelectedCountry, handleSubmit}) => {
+const CountrySelect: React.FC<CountrySelectProps> = ({setCountrySource, selectedCountry, setSelectedCountry, handleSubmitFromSelect}) => {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +53,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({setCountrySource, selected
       setError(null);
       setCountrySource("select");
 
-      handleSubmit(event);
+      handleSubmitFromSelect(event);
     } else {
       console.error("No country selected");
       setError('Please select a country');
