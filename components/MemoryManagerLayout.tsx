@@ -9,11 +9,12 @@ import CountryItem from "@/components/CountryItem";
 interface MemoryManagerLayoutProps {}
 
 interface Country {
-  countryCode: string;
   name: string;
+  country_code_alpha2: string;
+  un_code: number;
 }
 
-const TopLayout: React.FC<MemoryManagerLayoutProps> = () => {
+const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   const searchParams = useSearchParams();
   const [action, setAction] = useState<string | null>(null);
   const [countries, setCountries] = useState<Country[]>([]);
@@ -41,4 +42,4 @@ const TopLayout: React.FC<MemoryManagerLayoutProps> = () => {
   )
 }
 
-export default TopLayout;
+export default MemoryManagerLayout;

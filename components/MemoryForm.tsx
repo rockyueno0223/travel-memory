@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Country {
-  countryCode: string;
   name: string;
+  country_code_alpha2: string;
+  un_code: number;
 };
 
 interface MemoryFormProps {};
