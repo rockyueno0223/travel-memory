@@ -20,7 +20,7 @@ interface WorldMapProps {
 
 const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent, handleSubmitFromMap }) => {
 
-  const handleMapSubmit = (clickedUnCode: string, inDatabase: boolean) => {
+  const handleMapClick = (clickedUnCode: string, inDatabase: boolean) => {
     let formAction = "";
     if (inDatabase) {
       formAction = "edit";
@@ -53,7 +53,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ setTooltipContent, handleSubmitFrom
                 onMouseLeave={() => {
                   setTooltipContent("");
                 }}
-                onClick={() => handleMapSubmit(geo.id, isInDatabase)}
+                onClick={() => handleMapClick(geo.id, isInDatabase)}
                 style={{
                   default: { fill: isInDatabase ? '#1FA2D5' : '#E5F4F7'},
                   hover: { fill: '#095A8C' },
