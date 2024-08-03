@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css'
@@ -14,7 +14,7 @@ interface CountryData{
   un_code: string;
 }
 
-interface FetchedData {
+interface FetchedCountryData {
   countries: CountryData[];
 }
 
@@ -30,11 +30,34 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
   const [hoveredCountry, setHoveredCountry] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
+  const [memories, setMemories] = useState<any[]>([]);
 
-  const fetchData = async (): Promise<CountryData[] | undefined> => {
+  useEffect(() => {
+    fetchMemories();
+  }, []);
+
+  const fetchMemories = async () => {
+    try {
+      const response = await fetch('/hooks/memories/read');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log(data);
+
+      setMemories(data);
+      console.log('Fetch success!');
+
+    } catch (error) {
+      //setError(error.message);
+      console.error(error);
+    }
+  };
+
+  const fetchCountryData = async (): Promise<CountryData[] | undefined> => {
     try {
       const response = await fetch("/api/countryData.json");
-      const data: FetchedData = await response.json();
+      const data: FetchedCountryData = await response.json();
       return data.countries;
 
     } catch (error) {
@@ -51,11 +74,11 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       console.log('log2');
 
       // Format country object
-      const fetchedData = await fetchData();
+      const fetchedCountryData = await fetchCountryData();
 
       let formattedCountry;
-      if (fetchedData) {
-        formattedCountry = fetchedData.find(country => country.country_code_alpha2 === selectedCountry.value);
+      if (fetchedCountryData) {
+        formattedCountry = fetchedCountryData.find(country => country.country_code_alpha2 === selectedCountry.value);
       }
 
       // Replace selected country with array
@@ -69,11 +92,11 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   };
 
   const handleSubmitFromMap = async (unCode: string, action: string) => {
-    const fetchedData = await fetchData();
+    const fetchedCountryData = await fetchCountryData();
 
     let formattedCountry;
-    if (fetchedData) {
-      formattedCountry = fetchedData.find(country => country.un_code === unCode);
+    if (fetchedCountryData) {
+      formattedCountry = fetchedCountryData.find(country => country.un_code === unCode);
     }
 
     // Replace selected country with array
@@ -90,7 +113,10 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       <WorldMap setTooltipContent={setHoveredCountry} handleSubmitFromMap={handleSubmitFromMap} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} handleSubmitFromSelect={handleSubmitFromSelect} />
-      <p>selectedCountry: {selectedCountry?.label}</p>
+      <p>Memories:</p>
+      {memories.map((memory, index) => (
+        <p key={index}>{memory.comment}</p>
+      ))}
     </div>
   )
 }
