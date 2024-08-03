@@ -43,8 +43,6 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      console.log(data);
-
       setMemories(data);
       console.log('Fetch success!');
 
@@ -110,7 +108,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-6 items-center">
-      <WorldMap setTooltipContent={setHoveredCountry} handleSubmitFromMap={handleSubmitFromMap} />
+      <WorldMap memories={memories} setTooltipContent={setHoveredCountry} handleSubmitFromMap={handleSubmitFromMap} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} handleSubmitFromSelect={handleSubmitFromSelect} />
       <p>Memories:</p>
