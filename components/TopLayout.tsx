@@ -53,6 +53,25 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
     }
   };
 
+  const deleteMemory = async (id: number) => {
+    try {
+      const response = await fetch('/hooks/memories/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete memory');
+      }
+      fetchMemories();
+      console.log(`Delete success!`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const fetchCountryData = async (): Promise<CountryData[] | undefined> => {
     try {
       const response = await fetch("/api/countryData.json");
@@ -114,7 +133,10 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       <CountrySelect selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} handleSubmitFromSelect={handleSubmitFromSelect} />
       <p>Memories:</p>
       {memories.map((memory, index) => (
-        <EditMemoryForm key={index} memory={memory} />
+        <div key={index}>
+          <EditMemoryForm memory={memory} />
+          <button type="button" className="block h-8 w-20 text-sm text-white bg-[#095A8C] rounded" onClick={() => deleteMemory(memory.id)}>Delete</button>
+        </div>
       ))}
     </div>
   )
