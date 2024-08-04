@@ -54,7 +54,7 @@ const MemoryForm: React.FC<MemoryFormProps> = () => {
         <div>
           <textarea name="comment" id="comment" rows={3} className='w-full'></textarea>
         </div>
-        <button type="submit" className='block h-8 w-20 text-sm text-white bg-[#095A8C] rounded'>Click</button>
+        <button type="submit" className='block h-8 w-20 text-sm text-white bg-[#095A8C] rounded'>Create</button>
       </div>
     </form>
   );

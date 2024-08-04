@@ -7,6 +7,7 @@ import 'react-tooltip/dist/react-tooltip.css'
 
 import WorldMap from "@/components/WorldMap";
 import CountrySelect from "@/components/CountrySelect";
+import EditMemoryForm from "@/components/EditMemoryForm";
 
 interface CountryData{
   name: string;
@@ -113,7 +114,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       <CountrySelect selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} handleSubmitFromSelect={handleSubmitFromSelect} />
       <p>Memories:</p>
       {memories.map((memory, index) => (
-        <p key={index}>{memory.comment}</p>
+        <EditMemoryForm key={index} memory={memory} />
       ))}
     </div>
   )
