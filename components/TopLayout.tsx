@@ -8,6 +8,7 @@ import 'react-tooltip/dist/react-tooltip.css'
 import WorldMap from "@/components/WorldMap";
 import CountrySelect from "@/components/CountrySelect";
 import EditMemoryForm from "@/components/EditMemoryForm";
+import { supabase } from "@/utils/supabase/client";
 
 interface CountryData{
   name: string;
@@ -39,7 +40,18 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
   const fetchMemories = async () => {
     try {
-      const response = await fetch('/hooks/memories/read');
+      const { data: { session }} = await supabase.auth.getSession();
+
+      if (!session) return console.error(`Authentication error`);
+
+      const user = session.user;
+
+      const response = await fetch(`/hooks/memories/read?user_id=${user.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
