@@ -7,12 +7,12 @@ import { Tooltip } from "react-tooltip";
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 interface WorldMapProps {
-  memories: any[];
+  unCodesInDatabase: any[];
   setTooltipContent: (content: string) => void;
   handleSubmit: (source: string, action: string, unCode?: string) => void;
 }
 
-const WorldMap: React.FC<WorldMapProps> = ({ memories, setTooltipContent, handleSubmit }) => {
+const WorldMap: React.FC<WorldMapProps> = ({ unCodesInDatabase, setTooltipContent, handleSubmit }) => {
 
   const handleMapClick = (clickedUnCode: string, inDatabase: boolean) => {
     let formAction = "";
@@ -34,7 +34,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ memories, setTooltipContent, handle
       <Geographies geography={geoUrl}>
         {({ geographies }) =>
           geographies.map((geo: any) => {
-            const isInDatabase = memories.some(memory => memory.country_un_code === geo.id);
+            const isInDatabase = unCodesInDatabase.some(unCodeInDatabase => unCodeInDatabase.country_un_code === geo.id);
 
             return (
               <Geography

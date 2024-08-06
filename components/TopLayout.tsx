@@ -32,13 +32,13 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
   const [hoveredCountry, setHoveredCountry] = useState<string>("");
   const [selectedCountryOption, setSelectedCountryOption] = useState<CountryOption | null>(null);
-  const [memories, setMemories] = useState<any[]>([]);
+  const [unCodesInDatabase, setUnCodesInDatabase] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchMemories();
+    fetchUnCodes();
   }, []);
 
-  const fetchMemories = async () => {
+  const fetchUnCodes = async () => {
     try {
       const { data: { session }} = await supabase.auth.getSession();
 
@@ -46,7 +46,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
       const user = session.user;
 
-      const response = await fetch(`/hooks/memories/read?user_id=${user.id}`, {
+      const response = await fetch(`/hooks/unCodes/read?user_id=${user.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      setMemories(data);
+      setUnCodesInDatabase(data);
       console.log('Fetch success!');
 
     } catch (error) {
@@ -77,7 +77,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       if (!response.ok) {
         throw new Error('Failed to delete memory');
       }
-      fetchMemories();
+      fetchUnCodes();
       console.log(`Delete success!`);
     } catch (error) {
       console.error(error);
@@ -108,8 +108,8 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       }
       // make countries in database param
       let countriesInDatabase: CountryData[] = [];
-      memories.forEach(memory => {
-        const matchingCountryData = fetchedCountryData.find(country => country.un_code === memory.country_un_code);
+      unCodesInDatabase.forEach(unCodeInDatabase => {
+        const matchingCountryData = fetchedCountryData.find(country => country.un_code === unCodeInDatabase.country_un_code);
         if (matchingCountryData) {
           countriesInDatabase.push(matchingCountryData);
         }
@@ -125,14 +125,13 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-6 items-center">
-      <WorldMap memories={memories} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
+      <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
-      <p>Memories:</p>
-      {memories.map((memory, index) => (
+      <p>UN Code of Memories:</p>
+      {unCodesInDatabase.map((unCodeInDatabase, index) => (
         <div key={index}>
-          <EditMemoryForm memory={memory} />
-          <button type="button" className="block h-8 w-20 text-sm text-white bg-[#095A8C] rounded" onClick={() => deleteMemory(memory.id)}>Delete</button>
+          {unCodeInDatabase.country_un_code}
         </div>
       ))}
     </div>

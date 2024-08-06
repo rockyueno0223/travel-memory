@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import CountryItem from "@/components/CountryItem";
 import { supabase } from "@/utils/supabase/client";
+import EditMemoryForm from "./EditMemoryForm";
 
 interface MemoryManagerLayoutProps {}
 
@@ -90,6 +91,25 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
     setAction('edit');
   }
 
+  const deleteMemory = async (id: number) => {
+    try {
+      const response = await fetch('/hooks/memories/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete memory');
+      }
+      fetchMemories();
+      console.log(`Delete success!`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="flex-1 w-full flex flex-col gap-6 items-center">
       <p className="text-2xl font-bold">
@@ -109,6 +129,12 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
       <p>Selected country name: {selectedCountry?.name}</p>
       {countriesInDatabase.map((country, index) => (
         <CountryItem key={index} action={action} country={country} />
+      ))}
+      {memories.map((memory, index) => (
+        <div key={index}>
+          <EditMemoryForm memory={memory} />
+          <button type="button" className="block h-8 w-20 text-sm text-white bg-[#095A8C] rounded" onClick={() => deleteMemory(memory.id)}>Delete</button>
+        </div>
       ))}
     </div>
   )
