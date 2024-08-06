@@ -26,7 +26,7 @@ const CountryItem: React.FC<countryItemProps> = ({action, country}) => {
       <p>{country.country_code_alpha2}</p>
       <p>{country.un_code}</p>
       <MemoryItem action={action} country={country} />
-      {action === "add" && (
+      {action === "edit" && (
         <MemoryForm />
       )}
     </div>

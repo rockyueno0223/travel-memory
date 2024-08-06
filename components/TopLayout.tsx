@@ -31,7 +31,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   const router = useRouter();
 
   const [hoveredCountry, setHoveredCountry] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
+  const [selectedCountryOption, setSelectedCountryOption] = useState<CountryOption | null>(null);
   const [memories, setMemories] = useState<any[]>([]);
 
   useEffect(() => {
@@ -95,56 +95,39 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
     }
   };
 
-  const handleSubmitFromSelect = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (selectedCountry) {
-      // Fetch country data
-      const fetchedCountryData = await fetchCountryData();
-
-      if (fetchedCountryData) {
-        // Format country object
-        const formattedCountry = fetchedCountryData.find(country => country.country_code_alpha2 === selectedCountry.value);
-
-        if (formattedCountry) {
-          // Replace selected country with array
-          const formattedCountries = [formattedCountry];
-          // Encode the array to pass as param
-          const queryParams = encodeURIComponent(JSON.stringify(formattedCountries));
-          router.push(`/memoryManager?action=edit&countries=${queryParams}`);
-        } else {
-          console.error("Sorry, you can't select the country");
-        }
-      } else {
-        console.error("We failed to fetch country data");
-      }
-    } else {
-      console.error("Please select country");
-    }
-  };
-
-  const handleSubmitFromMap = async (unCode: string, action: string) => {
+  const handleSubmit = async (source: string, action: string, unCode?: string) => {
+    // fetch country data
     const fetchedCountryData = await fetchCountryData();
-
-    let formattedCountry;
     if (fetchedCountryData) {
-      formattedCountry = fetchedCountryData.find(country => country.un_code === unCode);
+      // make selected country param
+      let selectedCountry = null;
+      if (source === "select" && selectedCountryOption) {
+        selectedCountry = fetchedCountryData.find(country => country.country_code_alpha2 === selectedCountryOption.value);
+      } else if (source === "map") {
+        selectedCountry = fetchedCountryData.find(country => country.un_code === unCode);
+      }
+      // make countries in database param
+      let countriesInDatabase: CountryData[] = [];
+      memories.forEach(memory => {
+        const matchingCountryData = fetchedCountryData.find(country => country.un_code === memory.country_un_code);
+        if (matchingCountryData) {
+          countriesInDatabase.push(matchingCountryData);
+        }
+      });
+      // pass params
+      const selectedCountryParam = encodeURIComponent(JSON.stringify(selectedCountry));
+      const countriesInDatabaseParam = encodeURIComponent(JSON.stringify(countriesInDatabase));
+      router.push(`/memoryManager?action=${action}&selectedCountry=${selectedCountryParam}&countriesInDatabase=${countriesInDatabaseParam}`);
+    } else {
+      console.error("We failed to fetch country data");
     }
-
-    // Replace selected country with array
-    const formattedCountries = [formattedCountry];
-    // Encode the array to pass as param
-    const queryParams = encodeURIComponent(JSON.stringify(formattedCountries));
-    console.log(queryParams);
-
-    router.push(`/memoryManager?action=${action}&countries=${queryParams}`);
   }
 
   return (
     <div className="flex-1 w-full flex flex-col gap-6 items-center">
-      <WorldMap memories={memories} setTooltipContent={setHoveredCountry} handleSubmitFromMap={handleSubmitFromMap} />
+      <WorldMap memories={memories} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
-      <CountrySelect selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} handleSubmitFromSelect={handleSubmitFromSelect} />
+      <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
       <p>Memories:</p>
       {memories.map((memory, index) => (
         <div key={index}>

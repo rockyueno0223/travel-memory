@@ -16,20 +16,27 @@ interface Country {
 
 const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   const router = useRouter();
-
   const searchParams = useSearchParams();
-  const [action, setAction] = useState<string | null>(null);
-  const [countries, setCountries] = useState<Country[]>([]);
+
+  const [action, setAction] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const [countriesInDatabase, setCountriesInDatabase] = useState<Country[]>([]);
 
   useEffect(() => {
     // Get action param
     const actionParam = searchParams.get('action');
-    setAction(actionParam);
-    // Get countries param
-    const countriesParam = searchParams.get('countries');
-    if (countriesParam) {
-      const parsedCountries: Country[] = JSON.parse(decodeURIComponent(countriesParam));
-      setCountries(parsedCountries);
+    if (actionParam) setAction(actionParam);
+    // Get selected country param
+    const selectedCountryParam = searchParams.get('selectedCountry');
+    if (selectedCountryParam) {
+      const parsedSelectedCountry: Country = JSON.parse(decodeURIComponent(selectedCountryParam));
+      setSelectedCountry(parsedSelectedCountry);
+    }
+    // Get countries in database param
+    const countriesInDatabaseParam = searchParams.get('countriesInDatabase');
+    if (countriesInDatabaseParam) {
+      const parsedCountriesInDatabase: Country[] = JSON.parse(decodeURIComponent(countriesInDatabaseParam));
+      setCountriesInDatabase(parsedCountriesInDatabase);
     }
   }, [searchParams]);
 
@@ -37,7 +44,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
     if (action !== null) {
       router.refresh();
     }
-  }, [action, router]);
+  }, [action, router, selectedCountry]);
 
   const clickTopBtn = (): void => {
     router.push('/top');
@@ -66,8 +73,9 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
         )}
       </div>
       <h1>Memories Page</h1>
-      <p>{action}</p>
-      {countries.map((country, index) => (
+      <p>Action: {action}</p>
+      <p>Selected country name: {selectedCountry?.name}</p>
+      {countriesInDatabase.map((country, index) => (
         <CountryItem key={index} action={action} country={country} />
       ))}
     </div>

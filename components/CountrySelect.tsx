@@ -19,12 +19,12 @@ interface CountryOption {
 }
 
 interface CountrySelectProps {
-  selectedCountry: CountryOption | null;
-  setSelectedCountry: (content: CountryOption | null) => void;
-  handleSubmitFromSelect: (event: React.FormEvent) => void;
+  selectedCountryOption: CountryOption | null;
+  setSelectedCountryOption: (content: CountryOption | null) => void;
+  handleSubmit: (source: string, action: string, unCode?: string) => void;
 };
 
-const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountry, setSelectedCountry, handleSubmitFromSelect}) => {
+const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, setSelectedCountryOption, handleSubmit}) => {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +34,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountry, setSelec
         const response = await fetch("https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code");
         const data: FetchedData = await response.json();
         setCountryOptions(data.countries);
-        setSelectedCountry(data.userSelectValue);
+        setSelectedCountryOption(data.userSelectValue);
 
       } catch (error) {
         console.error("Error fetching country options:", error);
@@ -44,14 +44,12 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountry, setSelec
     fetchData();
   }, []);
 
-  const handleSelectSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleClickAddBtn = () => {
 
-    if (selectedCountry) {
+    if (selectedCountryOption) {
       // Clear any existing error
       setError(null);
-
-      handleSubmitFromSelect(event);
+      handleSubmit("select", "edit");
     } else {
       console.error("No country selected");
       setError('Please select a country');
@@ -59,16 +57,16 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountry, setSelec
   };
 
   return (
-    <form className='max-w-full flex gap-2 px-0.5' onSubmit={handleSelectSubmit}>
+    <div className='max-w-full flex gap-2 px-0.5'>
       {error && <p className='text-red-500'>{error}</p>}
       <Select
         options={countryOptions}
-        value={selectedCountry}
-        onChange={(selectedOption) => setSelectedCountry(selectedOption)}
+        value={selectedCountryOption}
+        onChange={(selectedOption) => setSelectedCountryOption(selectedOption)}
         className='w-80'
       />
-      <button type='submit' className='w-20 text-sm text-white bg-[#095A8C] rounded'>Add</button>
-    </form>
+      <button type='button' className='w-20 text-sm text-white bg-[#095A8C] rounded' onClick={handleClickAddBtn}>Add</button>
+    </div>
   );
 };
 

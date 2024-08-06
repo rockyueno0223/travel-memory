@@ -9,10 +9,10 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 interface WorldMapProps {
   memories: any[];
   setTooltipContent: (content: string) => void;
-  handleSubmitFromMap: (code: string, content: string) => void;
+  handleSubmit: (source: string, action: string, unCode?: string) => void;
 }
 
-const WorldMap: React.FC<WorldMapProps> = ({ memories, setTooltipContent, handleSubmitFromMap }) => {
+const WorldMap: React.FC<WorldMapProps> = ({ memories, setTooltipContent, handleSubmit }) => {
 
   const handleMapClick = (clickedUnCode: string, inDatabase: boolean) => {
     let formAction = "";
@@ -21,8 +21,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ memories, setTooltipContent, handle
     } else {
       formAction = "edit";
     }
-
-    handleSubmitFromMap(clickedUnCode, formAction);
+    handleSubmit("map", formAction, clickedUnCode);
   }
 
   return (
