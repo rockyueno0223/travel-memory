@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 
 import MemoryItem from "@/components/MemoryItem";
@@ -35,7 +35,7 @@ const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fet
           {sortedMemories.map(memory => (
             <EditMemoryForm key={memory.id} memory={memory} fetchMemories={fetchMemories} />
           ))}
-          <MemoryForm fetchMemories={fetchMemories} />
+          <MemoryForm unCode={country.un_code} fetchMemories={fetchMemories} />
         </>
       )}
       {action === "show" && (

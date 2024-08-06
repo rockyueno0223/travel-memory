@@ -1,14 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/utils/supabase/client';
-
-interface Country {
-  name: string;
-  country_code_alpha2: string;
-  un_code: string;
-};
+import React from 'react';
 
 interface EditMemoryFormProps {
   memory: any;
@@ -16,8 +8,6 @@ interface EditMemoryFormProps {
 };
 
 const EditMemoryForm: React.FC<EditMemoryFormProps> = ({memory, fetchMemories}) => {
-  const router = useRouter();
-
   const updateMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
@@ -58,7 +48,7 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({memory, fetchMemories}) 
       if (!response.ok) {
         throw new Error('Failed to delete memory');
       }
-      //fetchMemories();
+      fetchMemories();
       console.log(`Delete success!`);
     } catch (error) {
       console.error(error);

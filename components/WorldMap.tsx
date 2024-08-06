@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { ComposableMap, Geographies, Geography, Sphere, Graticule } from 'react-simple-maps';
-import { Tooltip } from "react-tooltip";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 

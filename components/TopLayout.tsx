@@ -7,7 +7,6 @@ import 'react-tooltip/dist/react-tooltip.css'
 
 import WorldMap from "@/components/WorldMap";
 import CountrySelect from "@/components/CountrySelect";
-import EditMemoryForm from "@/components/EditMemoryForm";
 import { supabase } from "@/utils/supabase/client";
 
 interface CountryData{

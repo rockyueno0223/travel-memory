@@ -3,10 +3,10 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/utils/supabase/client';
 
 export async function POST(req: Request) {
-  const { comment, user_id } = await req.json();
+  const { user_id, country_un_code, comment } = await req.json();
   const { data, error } = await supabase
     .from('memories')
-    .insert([{ comment, user_id }]);
+    .insert([{ user_id, country_un_code, comment }]);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

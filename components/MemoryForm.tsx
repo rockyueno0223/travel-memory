@@ -1,22 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
 import { supabase } from '@/utils/supabase/client';
 
-interface Country {
-  name: string;
-  country_code_alpha2: string;
-  un_code: string;
-};
-
 interface MemoryFormProps {
+  unCode: string;
   fetchMemories: () => void;
 };
 
-const MemoryForm: React.FC<MemoryFormProps> = ({ fetchMemories }) => {
-  const router = useRouter();
-
+const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
   const createMemory = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -34,7 +26,7 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ fetchMemories }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ comment, user_id: user.id }),
+        body: JSON.stringify({ user_id: user.id, country_un_code: unCode, comment }),
       });
       if (!response.ok) {
         throw new Error('Failed to create memory');
