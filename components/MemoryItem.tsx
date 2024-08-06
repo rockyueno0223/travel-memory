@@ -8,9 +8,9 @@ interface MemoryItemProps {
 
 const MemoryItem: React.FC<MemoryItemProps> = ({ memory }) => {
   return (
-    <div className='flex-1 w-full flex gap-2 items-center h-14'>
-      <div className='w-1/3'>img</div>
-      <div className='w-2/3'>
+    <div className='flex-1 w-full flex gap-5 items-center'>
+      <div className='w-1/3 h-48'>img</div>
+      <div className='w-2/3 h-48 flex items-center'>
         {memory.comment}
       </div>
     </div>

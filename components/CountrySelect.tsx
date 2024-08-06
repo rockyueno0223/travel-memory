@@ -1,7 +1,34 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
+
+interface OptionType {
+  value: string;
+  label: string;
+}
+
+const customStyles: StylesConfig<OptionType, false> = {
+  control: (provided, state) => ({
+    ...provided,
+    minHeight: '48px', // Set the minimum height
+    height: '48px', // Set the height
+  }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    height: '48px', // Ensure the value container has the same height
+    padding: '0 8px',
+  }),
+  input: (provided, state) => ({
+    ...provided,
+    margin: '0', // Remove default margin
+    padding: '0', // Remove default padding
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: '48px', // Ensure the indicators container has the same height
+  }),
+};
 
 interface CountryOption {
   value: string;
@@ -63,9 +90,10 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, se
         options={countryOptions}
         value={selectedCountryOption}
         onChange={(selectedOption) => setSelectedCountryOption(selectedOption)}
-        className='w-80'
+        className='w-96 h-12'
+        styles={customStyles}
       />
-      <button type='button' className='w-20 text-sm text-white bg-[#095A8C] rounded' onClick={handleClickAddBtn}>Add</button>
+      <button type='button' className='block w-24 h-12 text-lg text-white bg-[#095A8C] rounded' onClick={handleClickAddBtn}>Add</button>
     </div>
   );
 };

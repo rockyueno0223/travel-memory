@@ -40,15 +40,17 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
   };
 
   return (
-    <form onSubmit={createMemory} className='flex-1 w-full flex gap-2 items-center h-14'>
-      <div className='w-1/3'>
+    <form onSubmit={createMemory} className='flex-1 w-full flex gap-5 items-center'>
+      <div className='w-1/3 h-48'>
         <input type="file" name="image" id="image" />
       </div>
-      <div className='w-2/3'>
-        <div>
-          <textarea name="comment" id="comment" rows={3} className='w-full'></textarea>
+      <div className='w-2/3 h-48'>
+        <div className='mt-5'>
+          <textarea name="comment" id="comment" rows={3} className='w-full p-2'></textarea>
         </div>
-        <button type="submit" className='block h-8 w-20 text-sm text-white bg-[#095A8C] rounded'>Create</button>
+        <div className='w-full flex justify-end mt-3'>
+          <button type="submit" className='block h-10 w-24 text-lg text-white bg-[#095A8C] rounded'>Create</button>
+        </div>
       </div>
     </form>
   );

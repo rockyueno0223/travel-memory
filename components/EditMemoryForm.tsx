@@ -56,17 +56,17 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({memory, fetchMemories}) 
   }
 
   return (
-    <form className='flex-1 w-full flex gap-2 items-center h-14'>
-      <div className='w-1/3'>
+    <form className='flex-1 w-full flex gap-5 items-center'>
+      <div className='w-1/3 h-48'>
         <input type="file" name="image" id="image" />
       </div>
-      <div className='w-2/3'>
-        <div>
-          <textarea name="comment" id="comment" rows={3} className='w-full'>{memory.comment}</textarea>
+      <div className='w-2/3 h-48'>
+        <div className='mt-5'>
+          <textarea name="comment" id="comment" rows={4} className='w-full p-2'>{memory.comment}</textarea>
         </div>
-        <div className='w-full flex justify-between'>
-          <button type="button" className="block h-8 w-20 text-sm text-white bg-red-600 rounded" onClick={deleteMemory}>Delete</button>
-          <button type="button" className='block h-8 w-20 text-sm text-white bg-[#095A8C] rounded' onClick={updateMemory}>Update</button>
+        <div className='w-full flex justify-between mt-3'>
+          <button type="button" className="block h-10 w-24 text-lg text-white bg-red-600 rounded" onClick={deleteMemory}>Delete</button>
+          <button type="button" className='block h-10 w-24 text-lg text-white bg-[#095A8C] rounded' onClick={updateMemory}>Update</button>
         </div>
       </div>
     </form>

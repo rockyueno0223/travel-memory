@@ -91,17 +91,17 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-6 items-center">
-      <p className="text-2xl font-bold">
+    <div className="flex-1 w-full flex flex-col gap-6 items-center px-2">
+      <p className="text-4xl font-bold mt-10 mb-8">
         {action === "edit" ? "Update Your Memories" : action === "show" ? "Your Memories" : ""}
       </p>
-      <div className='w-full flex justify-between'>
-        <button onClick={clickTopBtn} className="block">Top</button>
+      <div className='w-full flex justify-between mb-6'>
+        <button onClick={clickTopBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Top</button>
         {action === "edit" && (
-          <button onClick={clickFinishBtn} className="block">Finish</button>
+          <button onClick={clickFinishBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Finish</button>
         )}
         {action === "show" && (
-          <button onClick={clickEditBtn} className="block">Edit</button>
+          <button onClick={clickEditBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Edit</button>
         )}
       </div>
       {selectedCountry ? (

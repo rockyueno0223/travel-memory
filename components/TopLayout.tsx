@@ -105,13 +105,13 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-6 items-center">
+    <div className="flex-1 w-full flex flex-col items-center pb-8">
       <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
-      <p>UN Code of Memories:</p>
+      <p className="text-3xl mt-12 mb-8">You've visited 2 countries.</p>
       {unCodesInDatabase.map((unCodeInDatabase, index) => (
-        <div key={index}>
+        <div key={index} className="w-[480px] text-2xl border-b border-slate-400 ps-6 mb-3">
           {unCodeInDatabase.country_un_code}
         </div>
       ))}

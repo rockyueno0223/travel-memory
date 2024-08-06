@@ -28,8 +28,8 @@ const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fet
   });
 
   return (
-    <div className='flex-1 w-full flex flex-col gap-2 items-center'>
-      <p className='text-2xl ms-0'>{country.name}</p>
+    <div className='flex-1 w-full flex flex-col gap-5 items-center'>
+      <p className='text-3xl font-bold mt-4 mb-4'>{country.name}</p>
       {action === "edit" && (
         <>
           {sortedMemories.map(memory => (
