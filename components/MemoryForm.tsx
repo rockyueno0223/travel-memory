@@ -10,9 +10,11 @@ interface Country {
   un_code: string;
 };
 
-interface MemoryFormProps {};
+interface MemoryFormProps {
+  fetchMemories: () => void;
+};
 
-const MemoryForm: React.FC<MemoryFormProps> = () => {
+const MemoryForm: React.FC<MemoryFormProps> = ({ fetchMemories }) => {
   const router = useRouter();
 
   const createMemory = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,7 +39,7 @@ const MemoryForm: React.FC<MemoryFormProps> = () => {
       if (!response.ok) {
         throw new Error('Failed to create memory');
       }
-      //fetchMemories();
+      fetchMemories();
       console.log(`Create success!`);
     } catch (error) {
       // setError(error.message);

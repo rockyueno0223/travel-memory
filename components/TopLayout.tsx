@@ -65,25 +65,6 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
     }
   };
 
-  const deleteMemory = async (id: number) => {
-    try {
-      const response = await fetch('/hooks/memories/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete memory');
-      }
-      fetchUnCodes();
-      console.log(`Delete success!`);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   const fetchCountryData = async (): Promise<CountryData[] | undefined> => {
     try {
       const response = await fetch("/api/countryData.json");

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import MemoryItem from "@/components/MemoryItem";
 import MemoryForm from '@/components/MemoryForm';
+import EditMemoryForm from '@/components/EditMemoryForm';
 
 interface Country {
   name: string;
@@ -12,22 +13,35 @@ interface Country {
   un_code: string;
 };
 
-interface countryItemProps {
-  action: string | null
-  country: Country
+interface CountryItemProps {
+  action: string;
+  country: Country;
+  memories: any[];
+  fetchMemories: () => void;
 };
 
-const CountryItem: React.FC<countryItemProps> = ({action, country}) => {
+const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fetchMemories}) => {
   const router = useRouter();
+
+  const sortedMemories = memories.filter(memory => {
+    return memory.country_un_code === country.un_code
+  });
 
   return (
     <div className='flex-1 w-full flex flex-col gap-2 items-center'>
       <p className='text-2xl ms-0'>{country.name}</p>
-      <p>{country.country_code_alpha2}</p>
-      <p>{country.un_code}</p>
-      <MemoryItem action={action} country={country} />
       {action === "edit" && (
-        <MemoryForm />
+        <>
+          {sortedMemories.map(memory => (
+            <EditMemoryForm key={memory.id} memory={memory} fetchMemories={fetchMemories} />
+          ))}
+          <MemoryForm fetchMemories={fetchMemories} />
+        </>
+      )}
+      {action === "show" && (
+        sortedMemories.map(memory => (
+          <MemoryItem key={memory.id} memory={memory} />
+        ))
       )}
     </div>
   );
