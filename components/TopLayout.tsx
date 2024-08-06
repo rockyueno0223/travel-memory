@@ -99,21 +99,27 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
     event.preventDefault();
 
     if (selectedCountry) {
-      // Format country object
+      // Fetch country data
       const fetchedCountryData = await fetchCountryData();
 
-      let formattedCountry;
       if (fetchedCountryData) {
-        formattedCountry = fetchedCountryData.find(country => country.country_code_alpha2 === selectedCountry.value);
-      }
+        // Format country object
+        const formattedCountry = fetchedCountryData.find(country => country.country_code_alpha2 === selectedCountry.value);
 
-      // Replace selected country with array
-      const formattedCountries = [formattedCountry];
-      // Encode the array to pass as param
-      const queryParams = encodeURIComponent(JSON.stringify(formattedCountries));
-      router.push(`/memoryManager?action=edit&countries=${queryParams}`);
+        if (formattedCountry) {
+          // Replace selected country with array
+          const formattedCountries = [formattedCountry];
+          // Encode the array to pass as param
+          const queryParams = encodeURIComponent(JSON.stringify(formattedCountries));
+          router.push(`/memoryManager?action=edit&countries=${queryParams}`);
+        } else {
+          console.error("Sorry, you can't select the country");
+        }
+      } else {
+        console.error("We failed to fetch country data");
+      }
     } else {
-      console.error("I can't send form data");
+      console.error("Please select country");
     }
   };
 
