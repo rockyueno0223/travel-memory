@@ -106,14 +106,15 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       } else if (source === "map") {
         selectedCountry = fetchedCountryData.find(country => country.un_code === unCode);
       }
-      // make countries in database param
-      let countriesInDatabase: CountryData[] = [];
-      unCodesInDatabase.forEach(unCodeInDatabase => {
-        const matchingCountryData = fetchedCountryData.find(country => country.un_code === unCodeInDatabase.country_un_code);
-        if (matchingCountryData) {
-          countriesInDatabase.push(matchingCountryData);
-        }
-      });
+      //make countries in database param
+      let countriesInDatabase: CountryData[] = Array.from(
+        new Set(
+          unCodesInDatabase
+            .map(unCodeInDatabase => fetchedCountryData.find(country => country.un_code === unCodeInDatabase.country_un_code))
+            .filter((country): country is CountryData => country !== undefined)
+        )
+      ).sort((a, b) => parseInt(a.un_code) - parseInt(b.un_code));
+
       // pass params
       const selectedCountryParam = encodeURIComponent(JSON.stringify(selectedCountry));
       const countriesInDatabaseParam = encodeURIComponent(JSON.stringify(countriesInDatabase));
