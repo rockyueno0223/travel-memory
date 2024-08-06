@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import CountryItem from "@/components/CountryItem";
+import { supabase } from "@/utils/supabase/client";
 
 interface MemoryManagerLayoutProps {}
 
@@ -21,6 +22,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   const [action, setAction] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [countriesInDatabase, setCountriesInDatabase] = useState<Country[]>([]);
+  const [memories, setMemories] = useState<any[]>([]);
 
   useEffect(() => {
     // Get action param
@@ -41,10 +43,40 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   }, [searchParams]);
 
   useEffect(() => {
+    fetchMemories();
+  }, []);
+
+  useEffect(() => {
     if (action !== null) {
       router.refresh();
     }
   }, [action, router, selectedCountry]);
+
+  const fetchMemories = async () => {
+    try {
+      const { data: { session }} = await supabase.auth.getSession();
+
+      if (!session) return console.error(`Authentication error`);
+
+      const user = session.user;
+
+      const response = await fetch(`/hooks/memories/read?user_id=${user.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setMemories(data);
+      console.log('Fetch success!');
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const clickTopBtn = (): void => {
     router.push('/top');
