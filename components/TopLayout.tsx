@@ -98,11 +98,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   const handleSubmitFromSelect = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log('log1');
-
     if (selectedCountry) {
-      console.log('log2');
-
       // Format country object
       const fetchedCountryData = await fetchCountryData();
 
@@ -115,7 +111,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       const formattedCountries = [formattedCountry];
       // Encode the array to pass as param
       const queryParams = encodeURIComponent(JSON.stringify(formattedCountries));
-      router.push(`/memoryManager?action=add&countries=${queryParams}`);
+      router.push(`/memoryManager?action=edit&countries=${queryParams}`);
     } else {
       console.error("I can't send form data");
     }

@@ -17,9 +17,9 @@ const WorldMap: React.FC<WorldMapProps> = ({ memories, setTooltipContent, handle
   const handleMapClick = (clickedUnCode: string, inDatabase: boolean) => {
     let formAction = "";
     if (inDatabase) {
-      formAction = "edit";
+      formAction = "show";
     } else {
-      formAction = "add";
+      formAction = "edit";
     }
 
     handleSubmitFromMap(clickedUnCode, formAction);
