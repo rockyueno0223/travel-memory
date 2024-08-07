@@ -45,19 +45,13 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
       const user = session.user;
 
-      const response = await fetch(`/hooks/unCodes/read?user_id=${user.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(`/hooks/unCodes/read?user_id=${user.id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
       setUnCodesInDatabase(data);
       console.log('Fetch success!');
-
     } catch (error) {
       //setError(error.message);
       console.error(error);

@@ -9,11 +9,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'User ID not provided' }, { status: 400 });
   }
 
-  const { data, error } = await supabase
-    .from('memories')
-    .select('id, country_un_code')
-    .eq('user_id', user_id)
-    .order('country_un_code', { ascending: true });
+  const { data, error } = await supabase.rpc('count_un_codes_by_user', { p_user_id: user_id });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
