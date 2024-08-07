@@ -32,9 +32,11 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   const [hoveredCountry, setHoveredCountry] = useState<string>("");
   const [selectedCountryOption, setSelectedCountryOption] = useState<CountryOption | null>(null);
   const [unCodesInDatabase, setUnCodesInDatabase] = useState<any[]>([]);
+  const [countryData, setCountryData] = useState<CountryData[]>([]);
 
   useEffect(() => {
     fetchUnCodes();
+    fetchCountryData();
   }, []);
 
   const fetchUnCodes = async () => {
@@ -51,40 +53,38 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       }
       const data = await response.json();
       setUnCodesInDatabase(data);
-      console.log('Fetch success!');
+      console.log('Fetch un code success!');
     } catch (error) {
       //setError(error.message);
-      console.error(error);
+      console.error("Error fetching unCode:", error);
     }
   };
 
-  const fetchCountryData = async (): Promise<CountryData[] | undefined> => {
+  const fetchCountryData = async () => {
     try {
       const response = await fetch("/api/countryData.json");
       const data: FetchedCountryData = await response.json();
-      return data.countries;
-
+      setCountryData(data.countries);
+      console.log('Fetch country data success!');
     } catch (error) {
       console.error("Error fetching countryData:", error);
     }
   };
 
   const handleSubmit = async (source: string, action: string, unCode?: string) => {
-    // fetch country data
-    const fetchedCountryData = await fetchCountryData();
-    if (fetchedCountryData) {
+    if (countryData) {
       // make selected country param
       let selectedCountry = null;
       if (source === "select" && selectedCountryOption) {
-        selectedCountry = fetchedCountryData.find(country => country.country_code_alpha2 === selectedCountryOption.value);
-      } else if (source === "map") {
-        selectedCountry = fetchedCountryData.find(country => country.un_code === unCode);
+        selectedCountry = countryData.find(country => country.country_code_alpha2 === selectedCountryOption.value);
+      } else if (source === "map" || source === "list") {
+        selectedCountry = countryData.find(country => country.un_code === unCode);
       }
       //make countries in database param
       let countriesInDatabase: CountryData[] = Array.from(
         new Set(
           unCodesInDatabase
-            .map(unCodeInDatabase => fetchedCountryData.find(country => country.un_code === unCodeInDatabase.country_un_code))
+            .map(unCodeInDatabase => countryData.find(country => country.un_code === unCodeInDatabase.country_un_code))
             .filter((country): country is CountryData => country !== undefined)
         )
       ).sort((a, b) => parseInt(a.un_code) - parseInt(b.un_code));
@@ -103,12 +103,44 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
-      <p className="text-3xl mt-12 mb-8">You've visited 2 countries.</p>
-      {unCodesInDatabase.map((unCodeInDatabase, index) => (
-        <div key={index} className="w-[480px] text-2xl border-b border-slate-400 ps-6 mb-3">
-          {unCodeInDatabase.country_un_code}
-        </div>
-      ))}
+      <p className="text-3xl mt-12 mb-8">
+        {unCodesInDatabase.length === 1 ? (
+          <>
+            You've visited 1 country.
+          </>
+        ) : unCodesInDatabase.length > 1 ? (
+          <>
+            You've visited {unCodesInDatabase.length} countries.
+          </>
+        ) : (
+          <>
+            Let's add your memories.
+          </>
+        )}
+      </p>
+      {unCodesInDatabase.map((unCodeInDatabase, index) => {
+        const country = countryData.find(
+          (country) => country.un_code === unCodeInDatabase.country_un_code
+        );
+        return (
+          <div key={index} className="w-[480px] border-b border-slate-400 px-6 mb-3 flex justify-between">
+            <span className="text-2xl text-slate-600 hover:text-slate-900 hover:cursor-pointer" onClick={() => handleSubmit('list', 'show', unCodeInDatabase.country_un_code)}>
+              {country ? country.name : unCodeInDatabase.country_un_code}
+            </span>
+            <span className="text-lg text-slate-700">
+              {unCodeInDatabase.country_count === 1 ? (
+                <>
+                  {unCodeInDatabase.country_count} memory.
+                </>
+              ) : (
+                <>
+                  {unCodeInDatabase.country_count} memories.
+                </>
+              )}
+            </span>
+          </div>
+        );
+      })}
     </div>
   )
 }
