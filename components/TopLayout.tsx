@@ -80,6 +80,8 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       } else if (source === "map" || source === "list") {
         selectedCountry = countryData.find(country => country.un_code === unCode);
       }
+      // selectedCountry = null if source is link
+
       //make countries in database param
       let countriesInDatabase: CountryData[] = Array.from(
         new Set(
@@ -99,7 +101,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col items-center pb-8">
+    <div className="flex-1 w-full flex flex-col items-center pb-10">
       <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
@@ -141,6 +143,9 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
           </div>
         );
       })}
+      <p className="mt-8 text-2xl hover:text-slate-500 hover:border-b hover:border-slate-400 hover:cursor-pointer" onClick={() => handleSubmit('link', 'show')}>
+        Show all your memories
+      </p>
     </div>
   )
 }
