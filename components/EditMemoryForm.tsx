@@ -1,18 +1,33 @@
 'use client';
 
 import React from 'react';
+import { supabase } from '@/utils/supabase/client';
 
 interface EditMemoryFormProps {
   memory: any;
   fetchMemories: () => void;
 };
 
-const EditMemoryForm: React.FC<EditMemoryFormProps> = ({memory, fetchMemories}) => {
+const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }) => {
+
+  const deleteImgFile = async () => {
+    const filePath = memory.img_url;
+    const { data, error } = await supabase
+      .storage
+      .from('travel-memory')
+      .remove([filePath]);
+    if (error) {
+      console.error(`Fail to delete image: ${error}`);
+    } else {
+      console.log('Image file deleted successfully');
+    }
+  }
+
   const updateMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget.closest('form') as HTMLFormElement);
-      const comment = formData.get('comment');
+      const comment = formData.get('edit-memory-form-comment');
 
       const id = memory.id;
 
@@ -48,6 +63,7 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({memory, fetchMemories}) 
       if (!response.ok) {
         throw new Error('Failed to delete memory');
       }
+      await deleteImgFile();
       fetchMemories();
       console.log(`Delete success!`);
     } catch (error) {
@@ -58,15 +74,36 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({memory, fetchMemories}) 
   return (
     <form className='flex-1 w-full flex gap-5 items-center'>
       <div className='w-1/3 h-48'>
-        <input type="file" name="image" id="image" />
+        <img
+          src={`https://eknieixncpvuirnsuisj.supabase.co/storage/v1/object/public/travel-memory/${memory.img_url}`}
+          alt="Memory Photo"
+        />
       </div>
       <div className='w-2/3 h-48'>
         <div className='mt-5'>
-          <textarea name="comment" id="comment" rows={4} className='w-full p-2'>{memory.comment}</textarea>
+          <textarea
+            name="edit-memory-form-comment"
+            id="edit-memory-form-comment"
+            rows={4}
+            className='w-full p-2'
+            defaultValue={memory.comment}
+          />
         </div>
         <div className='w-full flex justify-between mt-3'>
-          <button type="button" className="block h-10 w-24 text-lg text-white bg-red-600 rounded" onClick={deleteMemory}>Delete</button>
-          <button type="button" className='block h-10 w-24 text-lg text-white bg-[#095A8C] rounded' onClick={updateMemory}>Update</button>
+          <button
+            type="button"
+            className="block h-10 w-24 text-lg text-white bg-red-600 rounded"
+            onClick={deleteMemory}
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            className='block h-10 w-24 text-lg text-white bg-[#095A8C] rounded'
+            onClick={updateMemory}
+          >
+            Update
+          </button>
         </div>
       </div>
     </form>

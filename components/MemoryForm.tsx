@@ -10,7 +10,7 @@ interface MemoryFormProps {
 
 const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
 
-  const uploadImg = async (image: FormDataEntryValue) => {
+  const uploadImgFile = async (image: FormDataEntryValue) => {
     const imgPath = `memory_${Date.now()}`;
     const { data, error } = await supabase
       .storage
@@ -32,7 +32,7 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
       const comment = formData.get('memory-form-comment');
 
       if (image) {
-        const imgUrl = await uploadImg(image);
+        const imgUrl = await uploadImgFile(image);
 
         if (imgUrl !== null) {
           const { data: { session } } = await supabase.auth.getSession();
