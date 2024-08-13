@@ -9,30 +9,52 @@ interface MemoryFormProps {
 };
 
 const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
+
+  const uploadImg = async (image: FormDataEntryValue) => {
+    const imgPath = `memory_${Date.now()}`;
+    const { data, error } = await supabase
+      .storage
+      .from('travel-memory')
+      .upload(imgPath, image);
+
+    if (error) {
+      console.error(`Fail to upload image: ${error}`);
+      return null
+    }
+    return imgPath;
+  }
+
   const createMemory = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget);
+      const image = formData.get('image');
       const comment = formData.get('comment');
 
-      const { data: { session }} = await supabase.auth.getSession();
+      if (image) {
+        const imgUrl = uploadImg(image);
 
-      if (!session) return console.error(`Authentication error`);
+        if (imgUrl !== null) {
+          const { data: { session } } = await supabase.auth.getSession();
 
-      const user = session.user;
+          if (!session) return console.error(`Authentication error`);
 
-      const response = await fetch('/hooks/memories/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user_id: user.id, country_un_code: unCode, comment }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to create memory');
+          const user = session.user;
+
+          const response = await fetch('/hooks/memories/create', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: user.id, country_un_code: unCode, comment }),
+          });
+          if (!response.ok) {
+            throw new Error('Failed to create memory');
+          }
+          fetchMemories();
+          console.log(`Create success!`);
+        }
       }
-      fetchMemories();
-      console.log(`Create success!`);
     } catch (error) {
       // setError(error.message);
       console.error(error);
