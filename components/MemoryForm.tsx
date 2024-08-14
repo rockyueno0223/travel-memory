@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { supabase } from '@/utils/supabase/client';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface MemoryFormProps {
   unCode: string;
@@ -52,12 +54,12 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
             throw new Error('Failed to create memory');
           }
           fetchMemories();
-          console.log(`Create success!`);
+          toast.success('Create memory success!');
         }
       }
     } catch (error) {
-      // setError(error.message);
       console.error(error);
+      toast.error('Fail to create memory');
     }
   };
 

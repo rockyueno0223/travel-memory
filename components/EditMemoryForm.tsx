@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { supabase } from '@/utils/supabase/client';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface EditMemoryFormProps {
   memory: any;
@@ -42,32 +44,36 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
         throw new Error('Failed to update memory');
       }
       fetchMemories();
-      console.log(`Update success!`);
+      toast.success('Update memory success!');
     } catch (error) {
-      // setError(error.message);
       console.error(error);
+      toast.error('Fail to update memory');
     }
   };
 
   const deleteMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    try {
-      const id = memory.id;
-      const response = await fetch('/hooks/memories/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete memory');
+    const confirmation = confirm('Are you OK to delete this memory?');
+    if (confirmation === true) {
+      try {
+        const id = memory.id;
+        const response = await fetch('/hooks/memories/delete', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id }),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete memory');
+        }
+        await deleteImgFile();
+        fetchMemories();
+        toast.success('Delete memory success!');
+      } catch (error) {
+        console.error(error);
+        toast.error('Fail to delete memory');
       }
-      await deleteImgFile();
-      fetchMemories();
-      console.log(`Delete success!`);
-    } catch (error) {
-      console.error(error);
     }
   }
 

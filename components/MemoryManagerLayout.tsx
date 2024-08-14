@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from "@/utils/supabase/client";
 
 import CountryItem from "@/components/CountryItem";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface MemoryManagerLayoutProps {}
 
@@ -71,10 +73,9 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
       }
       const data = await response.json();
       setMemories(data);
-      console.log('Fetch success!');
-
     } catch (error) {
       console.error(error);
+      toast.error('Fail to get memories');
     }
   };
 
@@ -111,6 +112,18 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
           <CountryItem key={index} action={action} country={country} memories={memories} fetchMemories={fetchMemories} />
         ))
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   )
 }
