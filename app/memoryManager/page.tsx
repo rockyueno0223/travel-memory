@@ -1,7 +1,7 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import MemoryManagerLayout from "@/components/MemoryManagerLayout";
+import MemoryManagerLayout from "@/components/memoryManager/MemoryManagerLayout";
 
 export default async function MemoryManager() {
   const supabase = createClient();

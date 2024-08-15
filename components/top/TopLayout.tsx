@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css'
 
-import WorldMap from "@/components/WorldMap";
-import CountrySelect from "@/components/CountrySelect";
+import WorldMap from "@/components/top/WorldMap";
+import CountrySelect from "@/components/top/CountrySelect";
 import { supabase } from "@/utils/supabase/client";
 
 interface CountryData{

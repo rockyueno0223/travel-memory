@@ -3,9 +3,9 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-import MemoryItem from "@/components/MemoryItem";
-import MemoryForm from '@/components/MemoryForm';
-import EditMemoryForm from '@/components/EditMemoryForm';
+import MemoryItem from "@/components/memoryManager/MemoryItem";
+import MemoryForm from '@/components/memoryManager/MemoryForm';
+import EditMemoryForm from '@/components/memoryManager/EditMemoryForm';
 
 interface Country {
   name: string;

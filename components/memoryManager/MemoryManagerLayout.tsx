@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from "@/utils/supabase/client";
 
-import CountryItem from "@/components/CountryItem";
+import CountryItem from "@/components/memoryManager/CountryItem";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 

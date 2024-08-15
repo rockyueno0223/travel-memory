@@ -1,7 +1,7 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import TopLayout from "@/components/TopLayout";
+import TopLayout from "@/components/top/TopLayout";
 
 export default async function Top() {
   const supabase = createClient();
