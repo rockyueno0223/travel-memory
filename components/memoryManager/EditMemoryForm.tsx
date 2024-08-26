@@ -33,7 +33,7 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
 
       const id = memory.id;
 
-      const response = await fetch('/hooks/memories/update', {
+      const response = await fetch('/api/memories/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
     if (confirmation === true) {
       try {
         const id = memory.id;
-        const response = await fetch('/hooks/memories/delete', {
+        const response = await fetch('/api/memories/delete', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

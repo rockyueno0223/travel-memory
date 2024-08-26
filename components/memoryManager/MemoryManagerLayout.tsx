@@ -62,7 +62,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
 
       const user = session.user;
 
-      const response = await fetch(`/hooks/memories/read?user_id=${user.id}`, {
+      const response = await fetch(`/api/memories/read?user_id=${user.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

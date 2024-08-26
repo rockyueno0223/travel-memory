@@ -43,7 +43,7 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
 
           const user = session.user;
 
-          const response = await fetch('/hooks/memories/create', {
+          const response = await fetch('/api/memories/create', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

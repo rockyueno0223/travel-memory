@@ -47,7 +47,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
       const user = session.user;
 
-      const response = await fetch(`/hooks/unCodes/read?user_id=${user.id}`);
+      const response = await fetch(`/api/unCodes/read?user_id=${user.id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
