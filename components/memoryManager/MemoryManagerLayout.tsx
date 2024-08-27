@@ -8,6 +8,7 @@ import { supabase } from "@/utils/supabase/client";
 import CountryItem from "@/components/memoryManager/CountryItem";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import fetchCountryData from "@/app/hooks/useCountryData";
 
 interface MemoryManagerLayoutProps {}
 
@@ -23,8 +24,9 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
 
   const [action, setAction] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [countriesInDatabase, setCountriesInDatabase] = useState<Country[]>([]);
+
   const [memories, setMemories] = useState<any[]>([]);
+  const [countriesInDatabase, setCountriesInDatabase] = useState<Country[]>([]);
 
   useEffect(() => {
     // Get action param
@@ -36,17 +38,15 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
       const parsedSelectedCountry: Country = JSON.parse(decodeURIComponent(selectedCountryParam));
       setSelectedCountry(parsedSelectedCountry);
     }
-    // Get countries in database param
-    const countriesInDatabaseParam = searchParams.get('countriesInDatabase');
-    if (countriesInDatabaseParam) {
-      const parsedCountriesInDatabase: Country[] = JSON.parse(decodeURIComponent(countriesInDatabaseParam));
-      setCountriesInDatabase(parsedCountriesInDatabase);
-    }
+
+    fetchMemories();
   }, [searchParams]);
 
-  useEffect(() => {
-    fetchMemories();
-  }, []);
+   useEffect(() => {
+    if (memories.length > 0) {
+      getCountryData();
+    }
+  }, [memories]);
 
   useEffect(() => {
     if (action !== null) {
@@ -78,6 +78,23 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
       toast.error('Fail to get memories');
     }
   };
+
+  const getCountryData = async () => {
+    const data: Country[] | null = await fetchCountryData();
+    if (data) {
+      const unCodesInDatabase = memories.map(memory => memory.country_un_code);
+
+      let sortedCounties: Country[] = Array.from(
+        new Set(
+          unCodesInDatabase
+            .map(unCode => data.find(country => country.un_code === unCode))
+            .filter((country): country is Country => country !== undefined)
+        )
+      ).sort((a, b) => parseInt(a.un_code) - parseInt(b.un_code));
+
+      setCountriesInDatabase(sortedCounties);
+    }
+  }
 
   const clickTopBtn = (): void => {
     router.push('/top');

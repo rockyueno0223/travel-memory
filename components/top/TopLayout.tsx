@@ -62,9 +62,9 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   };
 
   const getCountryData = async () => {
-    const data: FetchedCountryData | null = await fetchCountryData();
+    const data: CountryData[] | null = await fetchCountryData();
     if (data) {
-      setCountryData(data.countries);
+      setCountryData(data);
     }
   }
 
@@ -77,21 +77,11 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       } else if (source === "map" || source === "list") {
         selectedCountry = countryData.find(country => country.un_code === unCode);
       }
-      // selectedCountry = null if source is link
-
-      //make countries in database param
-      let countriesInDatabase: CountryData[] = Array.from(
-        new Set(
-          unCodesInDatabase
-            .map(unCodeInDatabase => countryData.find(country => country.un_code === unCodeInDatabase.country_un_code))
-            .filter((country): country is CountryData => country !== undefined)
-        )
-      ).sort((a, b) => parseInt(a.un_code) - parseInt(b.un_code));
+      // selectedCountry is null if source is link
 
       // pass params
       const selectedCountryParam = encodeURIComponent(JSON.stringify(selectedCountry));
-      const countriesInDatabaseParam = encodeURIComponent(JSON.stringify(countriesInDatabase));
-      router.push(`/memoryManager?action=${action}&selectedCountry=${selectedCountryParam}&countriesInDatabase=${countriesInDatabaseParam}`);
+      router.push(`/memoryManager?action=${action}&selectedCountry=${selectedCountryParam}`);
     } else {
       console.error("We failed to fetch country data");
     }
