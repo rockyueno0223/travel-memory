@@ -8,6 +8,7 @@ import 'react-tooltip/dist/react-tooltip.css'
 import WorldMap from "@/components/top/WorldMap";
 import CountrySelect from "@/components/top/CountrySelect";
 import { supabase } from "@/utils/supabase/client";
+import fetchCountryData from "@/app/hooks/useCountryData";
 
 interface CountryData{
   name: string;
@@ -36,7 +37,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
   useEffect(() => {
     fetchUnCodes();
-    fetchCountryData();
+    getCountryData();
   }, []);
 
   const fetchUnCodes = async () => {
@@ -60,16 +61,12 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
     }
   };
 
-  const fetchCountryData = async () => {
-    try {
-      const response = await fetch("/api/countryData.json");
-      const data: FetchedCountryData = await response.json();
+  const getCountryData = async () => {
+    const data: FetchedCountryData | null = await fetchCountryData();
+    if (data) {
       setCountryData(data.countries);
-      console.log('Fetch country data success!');
-    } catch (error) {
-      console.error("Error fetching countryData:", error);
     }
-  };
+  }
 
   const handleSubmit = async (source: string, action: string, unCode?: string) => {
     if (countryData) {
