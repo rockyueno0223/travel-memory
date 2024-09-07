@@ -109,7 +109,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-6 items-center px-2">
+    <div className="max-w-screen-xl mx-auto flex-1 w-full flex flex-col gap-6 items-center px-2">
       <p className="text-4xl font-bold mt-10 mb-8">
         {action === "edit" ? "Update Your Memories" : action === "show" ? "Your Memories" : ""}
       </p>
@@ -122,13 +122,15 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
           <button onClick={clickEditBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Edit</button>
         )}
       </div>
-      {selectedCountry ? (
-        <CountryItem action={action} country={selectedCountry} memories={memories} fetchMemories={fetchMemories} />
-      ) : (
-        countriesInDatabase.map((country, index) => (
-          <CountryItem key={index} action={action} country={country} memories={memories} fetchMemories={fetchMemories} />
-        ))
-      )}
+      <div className="w-full">
+        {selectedCountry ? (
+          <CountryItem action={action} country={selectedCountry} memories={memories} fetchMemories={fetchMemories} />
+        ) : (
+          countriesInDatabase.map((country, index) => (
+            <CountryItem key={index} action={action} country={country} memories={memories} fetchMemories={fetchMemories} />
+          ))
+        )}
+      </div>
       <ToastContainer
         position="top-center"
         autoClose={4000}

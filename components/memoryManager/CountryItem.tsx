@@ -30,19 +30,21 @@ const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fet
   return (
     <div className='flex-1 w-full flex flex-col gap-5 items-center'>
       <p className='text-3xl font-bold mt-4 mb-4'>{country.name}</p>
-      {action === "edit" && (
-        <>
-          {sortedMemories.map(memory => (
-            <EditMemoryForm key={memory.id} memory={memory} fetchMemories={fetchMemories} />
-          ))}
-          <MemoryForm unCode={country.un_code} fetchMemories={fetchMemories} />
-        </>
-      )}
-      {action === "show" && (
-        sortedMemories.map(memory => (
-          <MemoryItem key={memory.id} memory={memory} />
-        ))
-      )}
+      <div className='w-full flex flex-wrap'>
+        {action === "edit" && (
+          <>
+            {sortedMemories.map(memory => (
+              <EditMemoryForm key={memory.id} memory={memory} fetchMemories={fetchMemories} />
+            ))}
+            <MemoryForm unCode={country.un_code} fetchMemories={fetchMemories} />
+          </>
+        )}
+        {action === "show" && (
+          sortedMemories.map(memory => (
+            <MemoryItem key={memory.id} memory={memory} />
+          ))
+        )}
+      </div>
     </div>
   );
 };
