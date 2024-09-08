@@ -8,7 +8,7 @@ interface MemoryItemProps {
 
 const MemoryItem: React.FC<MemoryItemProps> = ({ memory }) => {
   return (
-    <div className='w-full flex-none border p-6'>
+    <div className='w-full max-w-sm flex-none border p-6'>
       <div className='w-full'>
         <img
           src={`https://eknieixncpvuirnsuisj.supabase.co/storage/v1/object/public/travel-memory/${memory.img_url}`}

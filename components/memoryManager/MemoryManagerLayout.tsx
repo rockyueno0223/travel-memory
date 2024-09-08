@@ -122,7 +122,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
           <button onClick={clickEditBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Edit</button>
         )}
       </div>
-      <div className="w-full flex flex-col gap-12">
+      <div className="w-full flex flex-col gap-14">
         {selectedCountry ? (
           <CountryItem action={action} country={selectedCountry} memories={memories} fetchMemories={fetchMemories} />
         ) : (
