@@ -109,7 +109,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto flex-1 w-full flex flex-col gap-6 items-center px-2">
+    <div className="max-w-screen-xl mx-auto flex-1 w-full flex flex-col gap-6 items-center px-4">
       <p className="text-4xl font-bold mt-10 mb-8">
         {action === "edit" ? "Update Your Memories" : action === "show" ? "Your Memories" : ""}
       </p>
@@ -122,7 +122,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
           <button onClick={clickEditBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Edit</button>
         )}
       </div>
-      <div className="w-full">
+      <div className="w-full flex flex-col gap-12">
         {selectedCountry ? (
           <CountryItem action={action} country={selectedCountry} memories={memories} fetchMemories={fetchMemories} />
         ) : (
