@@ -78,24 +78,25 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
   }
 
   return (
-    <form className='flex-1 w-full flex gap-5 items-center'>
-      <div className='w-1/3 h-48'>
+    <form className='w-full max-w-sm flex-none border p-6'>
+      <div className='w-full'>
         <img
           src={`https://eknieixncpvuirnsuisj.supabase.co/storage/v1/object/public/travel-memory/${memory.img_url}`}
           alt="Memory Photo"
+          className='w-full h-auto max-h-[576px] mx-auto object-contain'
         />
       </div>
-      <div className='w-2/3 h-48'>
-        <div className='mt-5'>
+      <div className='w-full mt-6 text-xl leading-none'>
+        <div>
           <textarea
             name="edit-memory-form-comment"
             id="edit-memory-form-comment"
             rows={4}
-            className='w-full p-2'
+            className='w-full p-2 border rounded'
             defaultValue={memory.comment}
           />
         </div>
-        <div className='w-full flex justify-between mt-3'>
+        <div className='w-full flex justify-between mt-2'>
           <button
             type="button"
             className="block h-10 w-24 text-lg text-white bg-red-600 rounded"
