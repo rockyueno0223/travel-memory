@@ -92,14 +92,14 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
-      <p className="text-3xl mt-12 mb-8">
+      <p className="text-3xl mt-12 mb-4">
         {unCodesInDatabase.length === 1 ? (
           <>
-            You've visited 1 country.
+            You've visited  <span className="text-4xl">1</span> country.
           </>
         ) : unCodesInDatabase.length > 1 ? (
           <>
-            You've visited {unCodesInDatabase.length} countries.
+            You've visited <span className="text-4xl">{unCodesInDatabase.length}</span> countries.
           </>
         ) : (
           <>
@@ -107,32 +107,35 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
           </>
         )}
       </p>
+      <p
+        className="mb-8 text-xl text-[#0000ED] border-b border-[#0000ED] hover:border-transparent hover:cursor-pointer"
+        onClick={() => handleSubmit('link', 'show')}
+      >
+        Show all your memories
+      </p>
       {unCodesInDatabase.map((unCodeInDatabase, index) => {
         const country = countryData.find(
           (country) => country.un_code === unCodeInDatabase.country_un_code
         );
         return (
           <div key={index} className="w-[480px] border-b border-slate-400 px-6 mb-3 flex justify-between">
-            <span className="text-2xl text-slate-600 hover:text-slate-900 hover:cursor-pointer" onClick={() => handleSubmit('list', 'show', unCodeInDatabase.country_un_code)}>
+            <span className="text-xl text-slate-600 hover:text-slate-900 hover:cursor-pointer" onClick={() => handleSubmit('list', 'show', unCodeInDatabase.country_un_code)}>
               {country ? country.name : unCodeInDatabase.country_un_code}
             </span>
             <span className="text-lg text-slate-700">
               {unCodeInDatabase.country_count === 1 ? (
                 <>
-                  {unCodeInDatabase.country_count} memory.
+                  <span className="text-xl">{unCodeInDatabase.country_count}</span> memory.
                 </>
               ) : (
                 <>
-                  {unCodeInDatabase.country_count} memories.
+                  <span className="text-xl">{unCodeInDatabase.country_count}</span> memories.
                 </>
               )}
             </span>
           </div>
         );
       })}
-      <p className="mt-8 text-2xl hover:text-slate-500 hover:border-b hover:border-slate-400 hover:cursor-pointer" onClick={() => handleSubmit('link', 'show')}>
-        Show all your memories
-      </p>
     </div>
   )
 }
