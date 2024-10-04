@@ -92,7 +92,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
       <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
-      <p className="text-3xl mt-12 mb-4">
+      <p className="text-3xl mt-12 mb-4 font-bodoni">
         {unCodesInDatabase.length === 1 ? (
           <>
             You've visited  <span className="text-4xl">1</span> country.
@@ -118,7 +118,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
           (country) => country.un_code === unCodeInDatabase.country_un_code
         );
         return (
-          <div key={index} className="w-[480px] border-b border-slate-400 px-6 mb-3 flex justify-between">
+          <div key={index} className="w-[480px] border-b border-slate-400 px-6 pb-1 mb-3 flex justify-between">
             <span className="text-xl text-slate-600 hover:text-slate-900 hover:cursor-pointer" onClick={() => handleSubmit('list', 'show', unCodeInDatabase.country_un_code)}>
               {country ? country.name : unCodeInDatabase.country_un_code}
             </span>

@@ -16,7 +16,7 @@ const MemoryItem: React.FC<MemoryItemProps> = ({ memory }) => {
           className='w-full h-auto max-h-[576px] mx-auto object-contain'
         />
       </div>
-      <div className='w-full min-h-16 mt-6 text-xl leading-none'>
+      <div className='w-full min-h-16 mt-6 text-xl leading-none font-handlee'>
         {memory.comment}
       </div>
     </div>

@@ -34,7 +34,7 @@ const MainVisual = () => {
         />
       </picture>
       <div className="absolute top-[36%] w-full flex justify-center">
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-center">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-center font-bodoni text-white">
           Travel Memory
         </h1>
       </div>
@@ -42,7 +42,7 @@ const MainVisual = () => {
         <button
           type="button"
           onClick={handleStartBtnClick}
-          className="py-1 md:py-2 px-4 sm:px-5 md:px-6 text-base sm:text-lg md:text-xl border border-black rounded bg-transparent"
+          className="py-1 md:py-2 px-4 sm:px-5 md:px-6 text-base sm:text-lg md:text-xl border border-white rounded bg-transparent font-handlee text-white"
         >
           Start Now
         </button>
