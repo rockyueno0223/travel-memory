@@ -2,13 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import Select, { StylesConfig } from "react-select";
+import { CountryOption } from '@/app/hooks/types';
 
-interface OptionType {
-  value: string;
-  label: string;
-}
-
-const customStyles: StylesConfig<OptionType, false> = {
+const customStyles: StylesConfig<CountryOption, false> = {
   control: (provided, state) => ({
     ...provided,
     minHeight: '48px', // Set the minimum height
@@ -30,19 +26,9 @@ const customStyles: StylesConfig<OptionType, false> = {
   }),
 };
 
-interface CountryOption {
-  value: string;
-  label: string;
-}
-
-interface FetchedData {
+interface FetchedCountryOptionData {
   countries: CountryOption[];
   userSelectValue: CountryOption | null;
-}
-
-interface CountryOption {
-  value: string;
-  label: string;
 }
 
 interface CountrySelectProps {
@@ -59,7 +45,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, se
     const fetchData = async () => {
       try {
         const response = await fetch("https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code");
-        const data: FetchedData = await response.json();
+        const data: FetchedCountryOptionData = await response.json();
         setCountryOptions(data.countries);
         setSelectedCountryOption(data.userSelectValue);
 

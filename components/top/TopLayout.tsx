@@ -9,21 +9,7 @@ import WorldMap from "@/components/top/WorldMap";
 import CountrySelect from "@/components/top/CountrySelect";
 import { supabase } from "@/utils/supabase/client";
 import fetchCountryData from "@/app/hooks/useCountryData";
-
-interface CountryData{
-  name: string;
-  country_code_alpha2: string;
-  un_code: string;
-}
-
-interface FetchedCountryData {
-  countries: CountryData[];
-}
-
-interface CountryOption {
-  value: string;
-  label: string;
-}
+import { CountryData, CountryOption, UnCodesInDatabase } from "@/app/hooks/types";
 
 interface TopLayoutProps {}
 
@@ -32,7 +18,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
 
   const [hoveredCountry, setHoveredCountry] = useState<string>("");
   const [selectedCountryOption, setSelectedCountryOption] = useState<CountryOption | null>(null);
-  const [unCodesInDatabase, setUnCodesInDatabase] = useState<any[]>([]);
+  const [unCodesInDatabase, setUnCodesInDatabase] = useState<UnCodesInDatabase[]>([]);
   const [countryData, setCountryData] = useState<CountryData[]>([]);
 
   useEffect(() => {

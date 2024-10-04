@@ -4,9 +4,10 @@ import React from 'react';
 import { supabase } from '@/utils/supabase/client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Memory } from '@/app/hooks/types';
 
 interface EditMemoryFormProps {
-  memory: any;
+  memory: Memory;
   fetchMemories: () => void;
 };
 

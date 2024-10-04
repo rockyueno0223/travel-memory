@@ -6,17 +6,12 @@ import { useRouter } from 'next/navigation';
 import MemoryItem from "@/components/memoryManager/MemoryItem";
 import MemoryForm from '@/components/memoryManager/MemoryForm';
 import EditMemoryForm from '@/components/memoryManager/EditMemoryForm';
-
-interface Country {
-  name: string;
-  country_code_alpha2: string;
-  un_code: string;
-};
+import { CountryData, Memory } from '@/app/hooks/types';
 
 interface CountryItemProps {
   action: string;
-  country: Country;
-  memories: any[];
+  country: CountryData;
+  memories: Memory[];
   fetchMemories: () => void;
 };
 

@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { ComposableMap, Geographies, Geography, Sphere, Graticule } from 'react-simple-maps';
+import { UnCodesInDatabase } from '@/app/hooks/types';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 interface WorldMapProps {
-  unCodesInDatabase: any[];
+  unCodesInDatabase: UnCodesInDatabase[];
   setTooltipContent: (content: string) => void;
   handleSubmit: (source: string, action: string, unCode?: string) => void;
 }

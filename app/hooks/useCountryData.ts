@@ -1,12 +1,4 @@
-interface CountryData{
-  name: string;
-  country_code_alpha2: string;
-  un_code: string;
-}
-
-interface FetchedCountryData {
-  countries: CountryData[];
-}
+import { FetchedCountryData } from "@/app/hooks/types";
 
 const fetchCountryData = async () => {
     try {

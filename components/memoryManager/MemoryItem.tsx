@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
+import { Memory } from '@/app/hooks/types';
 
 interface MemoryItemProps {
-  memory: any;
+  memory: Memory;
 };
 
 const MemoryItem: React.FC<MemoryItemProps> = ({ memory }) => {

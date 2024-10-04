@@ -9,24 +9,19 @@ import CountryItem from "@/components/memoryManager/CountryItem";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import fetchCountryData from "@/app/hooks/useCountryData";
+import { CountryData, Memory } from "@/app/hooks/types";
 
 interface MemoryManagerLayoutProps {}
-
-interface Country {
-  name: string;
-  country_code_alpha2: string;
-  un_code: string;
-}
 
 const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [action, setAction] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
 
-  const [memories, setMemories] = useState<any[]>([]);
-  const [countriesInDatabase, setCountriesInDatabase] = useState<Country[]>([]);
+  const [memories, setMemories] = useState<Memory[]>([]);
+  const [countriesInDatabase, setCountriesInDatabase] = useState<CountryData[]>([]);
 
   useEffect(() => {
     // Get action param
@@ -35,7 +30,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
     // Get selected country param
     const selectedCountryParam = searchParams.get('selectedCountry');
     if (selectedCountryParam) {
-      const parsedSelectedCountry: Country = JSON.parse(decodeURIComponent(selectedCountryParam));
+      const parsedSelectedCountry: CountryData = JSON.parse(decodeURIComponent(selectedCountryParam));
       setSelectedCountry(parsedSelectedCountry);
     }
 
@@ -80,15 +75,15 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   };
 
   const getCountryData = async () => {
-    const data: Country[] | null = await fetchCountryData();
+    const data: CountryData[] | null = await fetchCountryData();
     if (data) {
       const unCodesInDatabase = memories.map(memory => memory.country_un_code);
 
-      let sortedCounties: Country[] = Array.from(
+      let sortedCounties: CountryData[] = Array.from(
         new Set(
           unCodesInDatabase
             .map(unCode => data.find(country => country.un_code === unCode))
-            .filter((country): country is Country => country !== undefined)
+            .filter((country): country is CountryData => country !== undefined)
         )
       ).sort((a, b) => parseInt(a.un_code) - parseInt(b.un_code));
 
