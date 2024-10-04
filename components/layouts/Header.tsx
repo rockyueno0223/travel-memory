@@ -46,16 +46,16 @@ const Header: React.FC = () => {
 
   return (
     <div>
-      <header className='bg-black'>
+      <header className='border-b border-neutral-200'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex items-center justify-between h-16'>
             <div className="flex items-center">
               <div className="flex-shrink">
                 <div
                   onClick={() => router.push(sessionExist ? '/top' : '/')}
-                  className='text-white hover:cursor-pointer'
+                  className='font-bodoni hover:cursor-pointer'
                 >
-                  Logo
+                  Travel Memory
                 </div>
               </div>
             </div>
@@ -65,19 +65,19 @@ const Header: React.FC = () => {
                   <>
                     <div
                       onClick={() => router.push('/top')}
-                      className='text-white hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                      className='hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                     >
                       Top
                     </div>
                     <div
                       onClick={() => router.push('/memoryManager?action=show&selectedCountry=null')}
-                      className='text-white hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                      className='hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                     >
                       Memories
                     </div>
                     <button
                       onClick={signOut}
-                      className='text-white hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                      className='hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                     >
                       Logout
                     </button>
@@ -86,13 +86,13 @@ const Header: React.FC = () => {
                   <>
                     <div
                       onClick={() => router.push('/login')}
-                      className='text-white hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                      className='hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                     >
                       Login
                       </div>
                       <div
                         onClick={() => router.push('/login')}
-                        className='text-white hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                        className='hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                       >
                         Sign Up
                     </div>
@@ -102,7 +102,7 @@ const Header: React.FC = () => {
             </div>
             <div className="md:hidden flex items-center">
               <button
-                className='inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
+                className='inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
                 onClick={toggleNavbar}>
                 {isClick ? (
                   <svg
@@ -141,19 +141,19 @@ const Header: React.FC = () => {
               <>
                 <div
                   onClick={() => router.push('/top')}
-                  className='text-white block hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                  className='block hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                 >
                   Top
                 </div>
                 <div
                   onClick={() => router.push('/memoryManager?action=show&selectedCountry=null')}
-                  className='text-white block hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                  className='block hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                 >
                   Memories
                 </div>
                 <button
                   onClick={signOut}
-                  className='w-full text-left text-white block hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                  className='w-full text-left block hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                 >
                   Logout
                 </button>
@@ -162,13 +162,13 @@ const Header: React.FC = () => {
               <>
                 <div
                   onClick={() => router.push('/login')}
-                  className='text-white block hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                  className='block hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                 >
                   Login
                 </div>
                 <div
                   onClick={() => router.push('/login')}
-                  className='text-white block hover:bg-white hover:text-black rounded-lg p-2 hover:cursor-pointer'
+                  className='block hover:bg-[#f0f0f0] hover:text-[#030E34] rounded-lg p-2 hover:cursor-pointer'
                 >
                   Sign Up
                 </div>
