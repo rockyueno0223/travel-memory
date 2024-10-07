@@ -74,7 +74,7 @@ const TopLayout: React.FC<TopLayoutProps> = () => {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col items-center pb-10">
+    <div className="flex-1 w-full flex flex-col items-center pb-10 px-3 sm:px-6 lg:px-8">
       <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
       <Tooltip id="world-map-tooltip" content={hoveredCountry} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />

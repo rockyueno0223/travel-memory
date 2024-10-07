@@ -104,7 +104,7 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto flex-1 w-full flex flex-col gap-6 items-center px-4">
+    <div className="max-w-screen-xl mx-auto flex-1 w-full flex flex-col gap-6 items-center px-3 sm:px-6 lg:px-8">
       <p className="text-4xl font-semibold mt-10 mb-8 font-bodoni">
         {action === "edit" ? "Update Your Memories" : action === "show" ? "Your Memories" : ""}
       </p>

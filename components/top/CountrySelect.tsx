@@ -70,7 +70,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, se
   };
 
   return (
-    <div className='max-w-full flex gap-2 px-0.5'>
+    <div className='max-w-full flex gap-2'>
       {error && <p className='text-red-500'>{error}</p>}
       <Select
         options={countryOptions}
