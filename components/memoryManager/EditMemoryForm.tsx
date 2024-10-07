@@ -5,6 +5,7 @@ import { supabase } from '@/utils/supabase/client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Memory } from '@/app/hooks/types';
+import Button from "@/components/layouts/Button";
 
 interface EditMemoryFormProps {
   memory: Memory;
@@ -98,20 +99,12 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
           />
         </div>
         <div className='w-full flex justify-between mt-2'>
-          <button
-            type="button"
-            className="block h-10 w-24 text-lg text-white bg-red-600 rounded"
-            onClick={deleteMemory}
-          >
+          <Button onClick={deleteMemory} style="delete">
             Delete
-          </button>
-          <button
-            type="button"
-            className='block h-10 w-24 text-lg text-white bg-[#095A8C] rounded'
-            onClick={updateMemory}
-          >
+          </Button>
+          <Button onClick={updateMemory}>
             Update
-          </button>
+          </Button>
         </div>
       </div>
     </form>

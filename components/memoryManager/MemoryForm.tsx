@@ -4,6 +4,7 @@ import React from 'react';
 import { supabase } from '@/utils/supabase/client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Button from "@/components/layouts/Button";
 
 interface MemoryFormProps {
   unCode: string;
@@ -83,7 +84,7 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
           />
         </div>
         <div className='w-full flex justify-end mt-2'>
-          <button type="submit" className='block h-10 w-24 text-lg text-white bg-[#095A8C] rounded'>Create</button>
+          <Button type="submit">Create</Button>
         </div>
       </div>
     </form>

@@ -10,6 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import fetchCountryData from "@/app/hooks/useCountryData";
 import { CountryData, Memory } from "@/app/hooks/types";
+import Button from "@/components/layouts/Button";
 
 interface MemoryManagerLayoutProps {}
 
@@ -109,12 +110,12 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
         {action === "edit" ? "Update Your Memories" : action === "show" ? "Your Memories" : ""}
       </p>
       <div className='w-full flex justify-between mb-6'>
-        <button onClick={clickTopBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Top</button>
+        <Button onClick={clickTopBtn}>Top</Button>
         {action === "edit" && (
-          <button onClick={clickFinishBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Finish</button>
+          <Button onClick={clickFinishBtn}>Finish</Button>
         )}
         {action === "show" && (
-          <button onClick={clickEditBtn} className="block h-10 w-24 text-lg bg-neutral-400 border rounded">Edit</button>
+          <Button onClick={clickEditBtn}>Edit</Button>
         )}
       </div>
       <div className="w-full flex flex-col gap-14">

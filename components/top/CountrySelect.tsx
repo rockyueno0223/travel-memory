@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Select, { StylesConfig } from "react-select";
 import { CountryOption } from '@/app/hooks/types';
+import Button from "@/components/layouts/Button";
 
 const customStyles: StylesConfig<CountryOption, false> = {
   control: (provided, state) => ({
@@ -79,7 +80,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, se
         className='w-96 h-12'
         styles={customStyles}
       />
-      <button type='button' className='block w-24 h-12 text-lg text-white bg-[#095A8C] rounded' onClick={handleClickAddBtn}>Add</button>
+      <Button onClick={handleClickAddBtn} style='select'>Add</Button>
     </div>
   );
 };
