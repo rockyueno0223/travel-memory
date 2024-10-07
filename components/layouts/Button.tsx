@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick, type, style }) => {
   const normalStyles = "border-neutral-500 hover:bg-[#f0f0f0]";
   const deleteStyles = "text-red-500 border-red-500 hover:bg-red-100";
   const normalSize = "h-10 w-24";
-  const countrySelectSize = "h-12 w-24"
+  const countrySelectSize = "h-12 w-20 sm:w-24"
 
     const buttonClasses = `${baseStyles} ${style === 'delete' ? deleteStyles : normalStyles} ${style === 'select' ? countrySelectSize : normalSize}`;
 

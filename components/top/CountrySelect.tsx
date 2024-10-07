@@ -10,16 +10,23 @@ const customStyles: StylesConfig<CountryOption, false> = {
     ...provided,
     minHeight: '48px', // Set the minimum height
     height: '48px', // Set the height
+    borderColor: 'rgb(115 115 115)', // Change border color
+    '&:hover': {
+      borderColor: 'rgb(115 115 115)', // Change border color on hover
+    },
+    fontSize: '20px', // Adjust the font size
   }),
   valueContainer: (provided, state) => ({
     ...provided,
     height: '48px', // Ensure the value container has the same height
     padding: '0 8px',
+    fontSize: '20px',
   }),
   input: (provided, state) => ({
     ...provided,
     margin: '0', // Remove default margin
     padding: '0', // Remove default padding
+    fontSize: '20px',
   }),
   indicatorsContainer: (provided, state) => ({
     ...provided,
@@ -71,13 +78,13 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, se
   };
 
   return (
-    <div className='max-w-full flex gap-2'>
+    <div className='w-full max-w-screen-sm mx-auto flex justify-between gap-2'>
       {error && <p className='text-red-500'>{error}</p>}
       <Select
         options={countryOptions}
         value={selectedCountryOption}
         onChange={(selectedOption) => setSelectedCountryOption(selectedOption)}
-        className='w-96 h-12'
+        className='flex-grow h-12'
         styles={customStyles}
       />
       <Button onClick={handleClickAddBtn} style='select'>Add</Button>
