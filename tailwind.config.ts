@@ -14,6 +14,11 @@ module.exports = {
           "background-hover": "hsl(var(--btn-background-hover))",
         },
       },
+      fontFamily: {
+        handlee: ['Handlee', 'cursive'],
+        bodoni: ["Bodoni Moda", 'serif'],
+        barlow: ["Barlow Condensed", 'system-ui']
+      },
     },
   },
   plugins: [],
