@@ -49,14 +49,17 @@ const Header: React.FC = () => {
       <header className='border-b border-neutral-200'>
         <div className='max-w-screen-xl mx-auto px-3 sm:px-6 lg:px-8'>
           <div className='flex items-center justify-between h-16'>
-            <div className="flex items-center">
-              <div className="flex-shrink">
-                <div
-                  onClick={() => router.push(sessionExist ? '/top' : '/')}
-                  className='font-bodoni hover:cursor-pointer'
-                >
-                  Travel Memory
-                </div>
+            <div className="flex items-center h-3/5">
+              <div
+                onClick={() => router.push(sessionExist ? '/top' : '/')}
+                className="flex items-center gap-1 h-full flex-shrink font-bodoni hover:cursor-pointer"
+              >
+                <img
+                  src="/images/logo.png"
+                  alt="Logo"
+                  className='h-full w-auto'
+                />
+                <span>Travel Memory</span>
               </div>
             </div>
             <div className="hidden md:block">
