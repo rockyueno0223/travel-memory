@@ -2,22 +2,19 @@
 
 import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
-import { Tooltip } from "react-tooltip";
-import 'react-tooltip/dist/react-tooltip.css'
 
 import WorldMap from "@/components/top/WorldMap";
 import CountrySelect from "@/components/top/CountrySelect";
 import { CountryData, CountryOption, UnCodesInDatabase } from "@/app/hooks/types";
 
-interface TopLayoutProps {
+interface TopClientProps {
   unCodesInDatabase: UnCodesInDatabase[];
   countryData: CountryData[];
 }
 
-const TopLayout: React.FC<TopLayoutProps> = ({ unCodesInDatabase, countryData }) => {
+const TopClient: React.FC<TopClientProps> = ({ unCodesInDatabase, countryData }) => {
   const router = useRouter();
 
-  const [hoveredCountry, setHoveredCountry] = useState<string>("");
   const [selectedCountryOption, setSelectedCountryOption] = useState<CountryOption | null>(null);
 
   const handleSubmit = async (source: string, action: string, unCode?: string) => {
@@ -41,8 +38,7 @@ const TopLayout: React.FC<TopLayoutProps> = ({ unCodesInDatabase, countryData })
 
   return (
     <div className="flex-1 w-full flex flex-col items-center pb-10 px-3 sm:px-6 lg:px-8">
-      <WorldMap unCodesInDatabase={unCodesInDatabase} setTooltipContent={setHoveredCountry} handleSubmit={handleSubmit} />
-      <Tooltip id="world-map-tooltip" content={hoveredCountry} />
+      <WorldMap unCodesInDatabase={unCodesInDatabase} handleSubmit={handleSubmit} />
       <CountrySelect selectedCountryOption={selectedCountryOption} setSelectedCountryOption={setSelectedCountryOption} handleSubmit={handleSubmit} />
       <p className="text-2xl sm:text-3xl mt-12 mb-4 font-bodoni">
         {unCodesInDatabase.length === 1 ? (
@@ -96,4 +92,4 @@ const TopLayout: React.FC<TopLayoutProps> = ({ unCodesInDatabase, countryData })
   )
 }
 
-export default TopLayout;
+export default TopClient;

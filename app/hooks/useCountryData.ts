@@ -2,7 +2,7 @@ import { FetchedCountryData } from "@/app/hooks/types";
 
 const fetchCountryData = async () => {
     try {
-      const response = await fetch("/api/countryData.json");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/countryData.json`);
       const data: FetchedCountryData = await response.json();
       return data.countries;
     } catch (error) {

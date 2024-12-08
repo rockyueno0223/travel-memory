@@ -1,9 +1,9 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import TopLayout from "@/components/top/TopLayout";
 import { CountryData, UnCodesInDatabase } from "../hooks/types";
 import fetchCountryData from "../hooks/useCountryData";
+import TopClient from "@/components/top/TopClient";
 
 export default async function Top() {
   const supabase = createClient();
@@ -23,7 +23,7 @@ export default async function Top() {
 
   return (
     <div className="w-full">
-      <TopLayout unCodesInDatabase={unCodesInDatabase} countryData={countryData} />
+      <TopClient unCodesInDatabase={unCodesInDatabase} countryData={countryData} />
     </div>
   )
 }
