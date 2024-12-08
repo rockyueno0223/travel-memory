@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import WorldMap from "@/components/top/WorldMap";
 import CountrySelect from "@/components/top/CountrySelect";
 import CountrySummary from "@/components/top/CountrySummary";
-import { CountryData, CountryOption, UnCodesInDatabase } from "@/app/hooks/types";
+import { CountryData, CountryOption, UnCodesInDatabase } from "@/types";
 
 interface TopClientProps {
   unCodesInDatabase: UnCodesInDatabase[];

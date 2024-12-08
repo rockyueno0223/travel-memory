@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Memory } from '@/app/hooks/types';
+import { Memory } from '@/types';
 
 interface MemoryItemProps {
   memory: Memory;

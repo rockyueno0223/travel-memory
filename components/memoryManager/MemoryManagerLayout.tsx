@@ -9,7 +9,7 @@ import CountryItem from "@/components/memoryManager/CountryItem";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import fetchCountryData from "@/app/hooks/useCountryData";
-import { CountryData, Memory } from "@/app/hooks/types";
+import { CountryData, Memory } from "@/types";
 import Button from "@/components/layouts/Button";
 
 interface MemoryManagerLayoutProps {}

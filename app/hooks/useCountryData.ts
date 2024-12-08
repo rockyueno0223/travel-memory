@@ -1,4 +1,4 @@
-import { FetchedCountryData } from "@/app/hooks/types";
+import { FetchedCountryData } from "@/types";
 
 const fetchCountryData = async () => {
     try {

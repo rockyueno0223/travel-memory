@@ -4,7 +4,7 @@ import React from 'react';
 import { supabase } from '@/utils/supabase/client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Memory } from '@/app/hooks/types';
+import { Memory } from '@/types';
 import Button from "@/components/layouts/Button";
 
 interface EditMemoryFormProps {

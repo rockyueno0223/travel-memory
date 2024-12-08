@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, Sphere, Graticule } from 'react-simple-maps';
-import { UnCodesInDatabase } from '@/app/hooks/types';
+import { UnCodesInDatabase } from '@/types';
 import { motion } from "framer-motion"
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'

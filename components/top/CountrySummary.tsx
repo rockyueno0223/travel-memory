@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react'
-import { CountryData, UnCodesInDatabase } from '@/app/hooks/types';
+import { CountryData, UnCodesInDatabase } from '@/types';
 import CountrySummaryItem from '@/components/top/CountrySummaryItem';
 
 interface CountrySummaryProps {

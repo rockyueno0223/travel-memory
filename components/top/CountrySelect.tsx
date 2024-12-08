@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Select, { StylesConfig } from "react-select";
-import { CountryOption } from '@/app/hooks/types';
+import { CountryOption } from '@/types';
 import Button from "@/components/layouts/Button";
 
 const customStyles: StylesConfig<CountryOption, false> = {

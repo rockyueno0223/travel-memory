@@ -1,8 +1,8 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { CountryData, UnCodesInDatabase } from "../hooks/types";
-import fetchCountryData from "../hooks/useCountryData";
+import { CountryData, UnCodesInDatabase } from "@/types";
+import fetchCountryData from "@/app/hooks/useCountryData";
 import TopClient from "@/components/top/TopClient";
 
 export default async function Top() {
