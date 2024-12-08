@@ -17,7 +17,6 @@ const Header: React.FC = () => {
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      console.log('checkSession called');
       setSessionExist(!!session);
     };
 
@@ -25,7 +24,6 @@ const Header: React.FC = () => {
 
     // Listen to auth state changes
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('onAuthStateChange called');
       setSessionExist(!!session);
     });
 

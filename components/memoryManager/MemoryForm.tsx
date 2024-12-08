@@ -21,7 +21,7 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
       .upload(imgPath, image);
 
     if (error) {
-      console.error(`Fail to upload image: ${error}`);
+      console.error(`Fail to upload image:`, error);
       return null
     }
     return imgPath;

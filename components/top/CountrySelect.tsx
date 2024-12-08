@@ -72,7 +72,6 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, se
       setError(null);
       handleSubmit("select", "edit");
     } else {
-      console.error("No country selected");
       setError('Please select a country');
     }
   };

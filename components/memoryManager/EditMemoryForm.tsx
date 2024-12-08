@@ -21,7 +21,7 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
       .from('travel-memory')
       .remove([filePath]);
     if (error) {
-      console.error(`Fail to delete image: ${error}`);
+      console.error(`Fail to delete image:`, error);
     } else {
       console.log('Image file deleted successfully');
     }
