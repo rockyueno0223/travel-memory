@@ -1,58 +1,24 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css'
 
 import WorldMap from "@/components/top/WorldMap";
 import CountrySelect from "@/components/top/CountrySelect";
-import { supabase } from "@/utils/supabase/client";
-import fetchCountryData from "@/app/hooks/useCountryData";
 import { CountryData, CountryOption, UnCodesInDatabase } from "@/app/hooks/types";
 
-interface TopLayoutProps {}
+interface TopLayoutProps {
+  unCodesInDatabase: UnCodesInDatabase[];
+  countryData: CountryData[];
+}
 
-const TopLayout: React.FC<TopLayoutProps> = () => {
+const TopLayout: React.FC<TopLayoutProps> = ({ unCodesInDatabase, countryData }) => {
   const router = useRouter();
 
   const [hoveredCountry, setHoveredCountry] = useState<string>("");
   const [selectedCountryOption, setSelectedCountryOption] = useState<CountryOption | null>(null);
-  const [unCodesInDatabase, setUnCodesInDatabase] = useState<UnCodesInDatabase[]>([]);
-  const [countryData, setCountryData] = useState<CountryData[]>([]);
-
-  useEffect(() => {
-    fetchUnCodes();
-    getCountryData();
-  }, []);
-
-  const fetchUnCodes = async () => {
-    try {
-      const { data: { session }} = await supabase.auth.getSession();
-
-      if (!session) return console.error(`Authentication error`);
-
-      const user = session.user;
-
-      const response = await fetch(`/api/unCodes/read?user_id=${user.id}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setUnCodesInDatabase(data);
-      console.log('Fetch un code success!');
-    } catch (error) {
-      //setError(error.message);
-      console.error("Error fetching unCode:", error);
-    }
-  };
-
-  const getCountryData = async () => {
-    const data: CountryData[] | null = await fetchCountryData();
-    if (data) {
-      setCountryData(data);
-    }
-  }
 
   const handleSubmit = async (source: string, action: string, unCode?: string) => {
     if (countryData) {
