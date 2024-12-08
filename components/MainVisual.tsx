@@ -5,17 +5,14 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from 'next/navigation';
 import { motion } from "framer-motion"
 
-const MainVisual = () => {
+interface MainVisualProps {
+  desktopImages: string[];
+}
+
+const MainVisual: React.FC<MainVisualProps> = ({ desktopImages }) => {
   const router = useRouter();
 
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const desktopImages = [
-    "main-visual1-pc.jpg",
-    "main-visual2-pc.jpg",
-    "main-visual3-pc.jpg",
-    "main-visual4-pc.jpg"
-  ];
 
   useEffect(() => {
     // Loop through images
@@ -39,7 +36,7 @@ const MainVisual = () => {
   }
 
   return (
-    <div className="w-full relative">
+    <>
       <picture className="w-full h-auto">
         <motion.img
           key={currentImage}
@@ -67,7 +64,7 @@ const MainVisual = () => {
           Start Now
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
