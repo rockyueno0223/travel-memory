@@ -17,7 +17,7 @@ const MainVisual: React.FC<MainVisualProps> = ({ desktopImages }) => {
   useEffect(() => {
     // Loop through images
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % 4);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % desktopImages.length);
     }, 5000);
 
     // Clear interval on unmount
@@ -42,6 +42,7 @@ const MainVisual: React.FC<MainVisualProps> = ({ desktopImages }) => {
           key={currentImage}
           src={currentImage}
           alt="Travel Memory Visual"
+          loading="lazy"
           className="w-full h-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
