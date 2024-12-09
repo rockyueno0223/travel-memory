@@ -6,7 +6,8 @@ export async function POST(req: Request) {
   const { user_id, country_un_code, comment, img_url } = await req.json();
   const { data, error } = await supabase
     .from('memories')
-    .insert([{ user_id, country_un_code, comment, img_url }]);
+    .insert([{ user_id, country_un_code, comment, img_url }])
+    .select();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

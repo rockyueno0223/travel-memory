@@ -41,7 +41,7 @@ export const addMemory = async (memoryData: Partial<Memory>): Promise<Memory | n
 };
 
 // Update an existing memory
-export const updateMemory = async (memoryData: Partial<Memory>): Promise<Memory | null> => {
+export const updateMemory = async (memoryData: Partial<Omit<Memory, "id">> & { id: number }): Promise<Memory | null> => {
   try {
     const res = await fetch(`${BASE_URL}/api/memories/update`, {
       method: "PUT",
@@ -63,10 +63,9 @@ export const updateMemory = async (memoryData: Partial<Memory>): Promise<Memory 
 // Delete a memory
 export const deleteMemory = async (memoryId: number): Promise<boolean> => {
   try {
-    const res = await fetch(`${BASE_URL}/api/memories/delete/`, {
+    const res = await fetch(`${BASE_URL}/api/memories/delete?memory_id=${memoryId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(memoryId),
     });
 
     if (!res.ok) {
