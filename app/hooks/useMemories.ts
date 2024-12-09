@@ -33,7 +33,8 @@ export const addMemory = async (memoryData: Partial<Memory>): Promise<Memory | n
       throw new Error(`Failed to add memory: ${res.statusText}`);
     }
 
-    return await res.json();
+    const data = await res.json();
+    return data[0];
   } catch (error) {
     console.error("Error adding memory:", error);
     return null;
@@ -53,7 +54,8 @@ export const updateMemory = async (memoryData: Partial<Omit<Memory, "id">> & { i
       throw new Error(`Failed to update memory: ${res.statusText}`);
     }
 
-    return await res.json();
+    const data = await res.json();
+    return data[0];
   } catch (error) {
     console.error("Error updating memory:", error);
     return null;

@@ -9,18 +9,25 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { CountryData, Memory } from "@/types";
 import Button from "@/components/layouts/Button";
+import { useMemoriesContext } from "@/app/context/MemoriesContext";
 
 interface MemoryManagerClientProps {
-  memories: Memory[];
-  countriesInDatabase: CountryData[];
+  countryData: CountryData[];
 }
 
-const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ memories, countriesInDatabase }) => {
+const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ countryData }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { memories, getMemories } = useMemoriesContext();
+
   const [action, setAction] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
+  const [countriesInDatabase, setCountriesInDatabase] = useState<CountryData[]>([]);
+
+  useEffect(() => {
+    if (memories === null) getMemories();
+  }, []);
 
   useEffect(() => {
     // Get action param
@@ -33,6 +40,22 @@ const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ memories, cou
       setSelectedCountry(parsedSelectedCountry);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (memories && countryData) {
+      const unCodesInDatabase = memories.map((memory) => memory.country_un_code);
+
+      const uniqueCountries = Array.from(
+        new Set(
+          unCodesInDatabase
+            .map((unCode) => countryData.find((country) => country.un_code === unCode))
+            .filter((country): country is CountryData => country !== undefined)
+        )
+      ).sort((a, b) => parseInt(a.un_code) - parseInt(b.un_code));
+
+      setCountriesInDatabase(uniqueCountries);
+    }
+  }, [memories, countryData]);
 
   const handleActionChange = (newAction: string) => {
     setAction(newAction);
@@ -62,7 +85,6 @@ const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ memories, cou
           <CountryItem
             action={action}
             country={selectedCountry}
-            memories={memories}
           />
         ) : (
           countriesInDatabase.map((country, index) => (
@@ -70,7 +92,6 @@ const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ memories, cou
               key={index}
               action={action}
               country={country}
-              memories={memories}
             />
           ))
         )}

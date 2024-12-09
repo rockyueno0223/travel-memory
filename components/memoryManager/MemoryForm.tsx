@@ -5,13 +5,15 @@ import { supabase } from '@/utils/supabase/client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from "@/components/layouts/Button";
-import { addMemory, fetchMemories } from '@/app/hooks/useMemories';
+import { addMemory } from '@/app/hooks/useMemories';
+import { useMemoriesContext } from '@/app/context/MemoriesContext';
 
 interface MemoryFormProps {
   unCode: string;
 };
 
 const MemoryForm: React.FC<MemoryFormProps> = ({ unCode }) => {
+  const { memories, setMemories } = useMemoriesContext();
 
   const uploadImgFile = async (image: FormDataEntryValue) => {
     const imgPath = `memory_${Date.now()}`;
@@ -49,7 +51,7 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode }) => {
           if (!addedMemory) {
             throw new Error('Failed to create memory');
           }
-          await fetchMemories(user.id);
+          if (memories) setMemories([...memories, addedMemory]);
           toast.success('Create memory success!');
         }
       }

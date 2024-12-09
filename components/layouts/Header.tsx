@@ -3,9 +3,12 @@
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { supabase } from "@/utils/supabase/client";
+import { useMemoriesContext } from '@/app/context/MemoriesContext';
 
 const Header: React.FC = () => {
   const router = useRouter();
+
+  const { setMemories } = useMemoriesContext();
 
   const [isClick, setIsClick] = useState<boolean>(false);
   const [sessionExist, setSessionExist] = useState<boolean>(false);
@@ -38,6 +41,8 @@ const Header: React.FC = () => {
     if (error) {
       console.error('Error signing out:', error);
     } else {
+      setMemories(null);
+      localStorage.removeItem("memories");
       router.push('/login');
     }
   };

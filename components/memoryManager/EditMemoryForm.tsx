@@ -6,13 +6,15 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Memory } from '@/types';
 import Button from "@/components/layouts/Button";
-import { deleteMemory, fetchMemories, updateMemory } from '@/app/hooks/useMemories';
+import { deleteMemory, updateMemory } from '@/app/hooks/useMemories';
+import { useMemoriesContext } from '@/app/context/MemoriesContext';
 
 interface EditMemoryFormProps {
   memory: Memory;
 };
 
 const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
+  const { memories, setMemories } = useMemoriesContext();
 
   const deleteImgFile = async () => {
     const filePath = memory.img_url;
@@ -40,11 +42,12 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
       if (!updatedMemory) {
         throw new Error('Failed to update memory');
       }
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('Unauthorized');
-      const user = session.user;
 
-      await fetchMemories(user.id);
+      if (memories) {
+        setMemories(
+          memories.map(memory => memory.id === id ? updatedMemory : memory)
+        );
+      }
       toast.success('Update memory success!');
     } catch (error) {
       console.error(error);
@@ -64,11 +67,11 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
         }
         await deleteImgFile();
 
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) throw new Error('Unauthorized');
-        const user = session.user;
-
-        await fetchMemories(user.id);
+        if (memories) {
+          setMemories(
+            memories.filter(memory => memory.id !== id)
+          );
+        }
         toast.success('Delete memory success!');
       } catch (error) {
         console.error(error);
