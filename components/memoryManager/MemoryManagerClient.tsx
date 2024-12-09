@@ -63,7 +63,6 @@ const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ memories, cou
             action={action}
             country={selectedCountry}
             memories={memories}
-            fetchMemories={fetchMemories}
           />
         ) : (
           countriesInDatabase.map((country, index) => (
@@ -72,7 +71,6 @@ const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ memories, cou
               action={action}
               country={country}
               memories={memories}
-              fetchMemories={fetchMemories}
             />
           ))
         )}

@@ -5,13 +5,13 @@ import { supabase } from '@/utils/supabase/client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from "@/components/layouts/Button";
+import { addMemory, fetchMemories } from '@/app/hooks/useMemories';
 
 interface MemoryFormProps {
   unCode: string;
-  fetchMemories: () => void;
 };
 
-const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
+const MemoryForm: React.FC<MemoryFormProps> = ({ unCode }) => {
 
   const uploadImgFile = async (image: FormDataEntryValue) => {
     const imgPath = `memory_${Date.now()}`;
@@ -32,7 +32,7 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
     try {
       const formData = new FormData(event.currentTarget);
       const image = formData.get('memory-form-image');
-      const comment = formData.get('memory-form-comment');
+      const comment = formData.get('memory-form-comment') as string;
 
       if (image) {
         const imgUrl = await uploadImgFile(image);
@@ -44,17 +44,12 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode, fetchMemories }) => {
 
           const user = session.user;
 
-          const response = await fetch('/api/memories/create', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user_id: user.id, country_un_code: unCode, comment, img_url: imgUrl }),
-          });
-          if (!response.ok) {
+          const addedMemory = await addMemory({ user_id: user.id, country_un_code: unCode, comment, img_url: imgUrl });
+
+          if (!addedMemory) {
             throw new Error('Failed to create memory');
           }
-          fetchMemories();
+          await fetchMemories(user.id);
           toast.success('Create memory success!');
         }
       }

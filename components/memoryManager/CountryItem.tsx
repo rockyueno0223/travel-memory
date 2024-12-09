@@ -12,10 +12,9 @@ interface CountryItemProps {
   action: string;
   country: CountryData;
   memories: Memory[];
-  fetchMemories: () => void;
 };
 
-const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fetchMemories}) => {
+const CountryItem: React.FC<CountryItemProps> = ({action, country, memories}) => {
   const router = useRouter();
 
   const sortedMemories = memories.filter(memory => {
@@ -31,9 +30,9 @@ const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fet
         {action === "edit" && (
           <>
             {sortedMemories.map(memory => (
-              <EditMemoryForm key={memory.id} memory={memory} fetchMemories={fetchMemories} />
+              <EditMemoryForm key={memory.id} memory={memory} />
             ))}
-            <MemoryForm unCode={country.un_code} fetchMemories={fetchMemories} />
+            <MemoryForm unCode={country.un_code} />
           </>
         )}
         {action === "show" && (
