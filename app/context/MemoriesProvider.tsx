@@ -45,7 +45,11 @@ export const MemoriesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     // Listen to auth state changes
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      getMemories();
+      setTimeout(async () => {
+        console.log('event called', event);
+
+        await getMemories();
+      }, 0);
     });
 
     // Cleanup on unmount

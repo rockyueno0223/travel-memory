@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import CountryItem from "@/components/memoryManager/CountryItem";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { CountryData, Memory } from "@/types";
+import { CountryData } from "@/types";
 import Button from "@/components/layouts/Button";
 import { useMemoriesContext } from "@/app/context/MemoriesContext";
 
@@ -19,15 +19,11 @@ const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ countryData }
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { memories, getMemories } = useMemoriesContext();
+  const { memories } = useMemoriesContext();
 
   const [action, setAction] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
   const [countriesInDatabase, setCountriesInDatabase] = useState<CountryData[]>([]);
-
-  useEffect(() => {
-    if (memories === null) getMemories();
-  }, []);
 
   useEffect(() => {
     // Get action param

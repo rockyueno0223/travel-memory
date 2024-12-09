@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 
 import MemoryItem from "@/components/memoryManager/MemoryItem";
 import MemoryForm from '@/components/memoryManager/MemoryForm';
@@ -15,8 +14,6 @@ interface CountryItemProps {
 };
 
 const CountryItem: React.FC<CountryItemProps> = ({action, country}) => {
-  const router = useRouter();
-
   const { memories } = useMemoriesContext();
 
   const sortedMemories: Memory[] = memories
