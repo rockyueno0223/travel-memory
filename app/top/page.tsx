@@ -16,7 +16,7 @@ export default async function Top() {
     return redirect("/login");
   }
 
-  const res = await fetch(`/api/unCodes/read?user_id=${user.id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/unCodes/read?user_id=${user.id}`);
   const unCodesInDatabase: UnCodesInDatabase[] = res.ok ? await res.json() : [];
 
   const countryData: CountryData[] = await fetchCountryData() || [];
