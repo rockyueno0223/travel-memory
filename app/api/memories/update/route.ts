@@ -6,7 +6,8 @@ export async function PUT(req: Request) {
   const { data, error } = await supabase
     .from('memories')
     .update({ comment })
-    .eq('id', id);
+    .eq('id', id)
+    .select();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

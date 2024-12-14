@@ -3,25 +3,26 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { supabase } from "@/utils/supabase/client";
 
 import CountryItem from "@/components/memoryManager/CountryItem";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import fetchCountryData from "@/app/hooks/useCountryData";
-import { CountryData, Memory } from "@/app/hooks/types";
+import { CountryData } from "@/types";
 import Button from "@/components/layouts/Button";
+import { useMemoriesContext } from "@/app/context/MemoriesContext";
 
-interface MemoryManagerLayoutProps {}
+interface MemoryManagerClientProps {
+  countryData: CountryData[];
+}
 
-const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
+const MemoryManagerClient: React.FC<MemoryManagerClientProps> = ({ countryData }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { memories } = useMemoriesContext();
+
   const [action, setAction] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
-
-  const [memories, setMemories] = useState<Memory[]>([]);
   const [countriesInDatabase, setCountriesInDatabase] = useState<CountryData[]>([]);
 
   useEffect(() => {
@@ -34,74 +35,31 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
       const parsedSelectedCountry: CountryData = JSON.parse(decodeURIComponent(selectedCountryParam));
       setSelectedCountry(parsedSelectedCountry);
     }
-
-    fetchMemories();
   }, [searchParams]);
 
-   useEffect(() => {
-    if (memories.length > 0) {
-      getCountryData();
-    }
-  }, [memories]);
-
   useEffect(() => {
-    if (action !== null) {
-      router.refresh();
-    }
-  }, [action, router, selectedCountry]);
+    if (memories && countryData) {
+      const unCodesInDatabase = memories.map((memory) => memory.country_un_code);
 
-  const fetchMemories = async () => {
-    try {
-      const { data: { session }} = await supabase.auth.getSession();
-
-      if (!session) return console.error(`Authentication error`);
-
-      const user = session.user;
-
-      const response = await fetch(`/api/memories/read?user_id=${user.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setMemories(data);
-    } catch (error) {
-      console.error(error);
-      toast.error('Fail to get memories');
-    }
-  };
-
-  const getCountryData = async () => {
-    const data: CountryData[] | null = await fetchCountryData();
-    if (data) {
-      const unCodesInDatabase = memories.map(memory => memory.country_un_code);
-
-      let sortedCounties: CountryData[] = Array.from(
+      const uniqueCountries = Array.from(
         new Set(
           unCodesInDatabase
-            .map(unCode => data.find(country => country.un_code === unCode))
+            .map((unCode) => countryData.find((country) => country.un_code === unCode))
             .filter((country): country is CountryData => country !== undefined)
         )
       ).sort((a, b) => parseInt(a.un_code) - parseInt(b.un_code));
 
-      setCountriesInDatabase(sortedCounties);
+      setCountriesInDatabase(uniqueCountries);
     }
-  }
+  }, [memories, countryData]);
+
+  const handleActionChange = (newAction: string) => {
+    setAction(newAction);
+    router.refresh();
+  };
 
   const clickTopBtn = (): void => {
     router.push('/top');
-  }
-
-  const clickFinishBtn = (): void => {
-    setAction('show');
-  }
-
-  const clickEditBtn = (): void => {
-    setAction('edit');
   }
 
   return (
@@ -112,18 +70,25 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
       <div className='w-full flex justify-between mb-2 sm:mb-5'>
         <Button onClick={clickTopBtn}>Top</Button>
         {action === "edit" && (
-          <Button onClick={clickFinishBtn}>Finish</Button>
+          <Button onClick={() => handleActionChange("show")}>Finish</Button>
         )}
         {action === "show" && (
-          <Button onClick={clickEditBtn}>Edit</Button>
+          <Button onClick={() => handleActionChange("edit")}>Edit</Button>
         )}
       </div>
       <div className="w-full flex flex-col gap-14">
         {selectedCountry ? (
-          <CountryItem action={action} country={selectedCountry} memories={memories} fetchMemories={fetchMemories} />
+          <CountryItem
+            action={action}
+            country={selectedCountry}
+          />
         ) : (
           countriesInDatabase.map((country, index) => (
-            <CountryItem key={index} action={action} country={country} memories={memories} fetchMemories={fetchMemories} />
+            <CountryItem
+              key={index}
+              action={action}
+              country={country}
+            />
           ))
         )}
       </div>
@@ -143,4 +108,4 @@ const MemoryManagerLayout: React.FC<MemoryManagerLayoutProps> = () => {
   )
 }
 
-export default MemoryManagerLayout;
+export default MemoryManagerClient;

@@ -1,26 +1,24 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 
 import MemoryItem from "@/components/memoryManager/MemoryItem";
 import MemoryForm from '@/components/memoryManager/MemoryForm';
 import EditMemoryForm from '@/components/memoryManager/EditMemoryForm';
-import { CountryData, Memory } from '@/app/hooks/types';
+import { CountryData, Memory } from '@/types';
+import { useMemoriesContext } from '@/app/context/MemoriesContext';
 
 interface CountryItemProps {
   action: string;
   country: CountryData;
-  memories: Memory[];
-  fetchMemories: () => void;
 };
 
-const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fetchMemories}) => {
-  const router = useRouter();
+const CountryItem: React.FC<CountryItemProps> = ({action, country}) => {
+  const { memories } = useMemoriesContext();
 
-  const sortedMemories = memories.filter(memory => {
-    return memory.country_un_code === country.un_code
-  });
+  const sortedMemories: Memory[] = memories
+    ? memories.filter(memory => memory.country_un_code === country.un_code)
+    : [];
 
   return (
     <div className='flex-1 w-full flex flex-col gap-6 items-center'>
@@ -31,9 +29,9 @@ const CountryItem: React.FC<CountryItemProps> = ({action, country, memories, fet
         {action === "edit" && (
           <>
             {sortedMemories.map(memory => (
-              <EditMemoryForm key={memory.id} memory={memory} fetchMemories={fetchMemories} />
+              <EditMemoryForm key={memory.id} memory={memory} />
             ))}
-            <MemoryForm unCode={country.un_code} fetchMemories={fetchMemories} />
+            <MemoryForm unCode={country.un_code} />
           </>
         )}
         {action === "show" && (

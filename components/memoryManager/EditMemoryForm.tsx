@@ -4,15 +4,17 @@ import React from 'react';
 import { supabase } from '@/utils/supabase/client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Memory } from '@/app/hooks/types';
+import { Memory } from '@/types';
 import Button from "@/components/layouts/Button";
+import { deleteMemory, updateMemory } from '@/app/hooks/useMemories';
+import { useMemoriesContext } from '@/app/context/MemoriesContext';
 
 interface EditMemoryFormProps {
   memory: Memory;
-  fetchMemories: () => void;
 };
 
-const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }) => {
+const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
+  const { memories, setMemories } = useMemoriesContext();
 
   const deleteImgFile = async () => {
     const filePath = memory.img_url;
@@ -21,31 +23,31 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
       .from('travel-memory')
       .remove([filePath]);
     if (error) {
-      console.error(`Fail to delete image: ${error}`);
+      console.error(`Fail to delete image:`, error);
     } else {
       console.log('Image file deleted successfully');
     }
   }
 
-  const updateMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUpdateMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget.closest('form') as HTMLFormElement);
-      const comment = formData.get('edit-memory-form-comment');
+      const comment = formData.get('edit-memory-form-comment') as string || null;
+      if (!comment) return;
 
       const id = memory.id;
 
-      const response = await fetch('/api/memories/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, comment }),
-      });
-      if (!response.ok) {
+      const updatedMemory = await updateMemory({ id, comment });
+      if (!updatedMemory) {
         throw new Error('Failed to update memory');
       }
-      fetchMemories();
+
+      if (memories) {
+        setMemories(
+          memories.map(memory => memory.id === id ? updatedMemory : memory)
+        );
+      }
       toast.success('Update memory success!');
     } catch (error) {
       console.error(error);
@@ -53,24 +55,23 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
     }
   };
 
-  const deleteMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDeleteMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const confirmation = confirm('Are you OK to delete this memory?');
     if (confirmation === true) {
       try {
         const id = memory.id;
-        const response = await fetch('/api/memories/delete', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id }),
-        });
-        if (!response.ok) {
+        const isDeleted = await deleteMemory(id);
+        if (!isDeleted) {
           throw new Error('Failed to delete memory');
         }
         await deleteImgFile();
-        fetchMemories();
+
+        if (memories) {
+          setMemories(
+            memories.filter(memory => memory.id !== id)
+          );
+        }
         toast.success('Delete memory success!');
       } catch (error) {
         console.error(error);
@@ -99,10 +100,10 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory, fetchMemories }
           />
         </div>
         <div className='w-full flex justify-between mt-2'>
-          <Button onClick={deleteMemory} style="delete">
+          <Button onClick={handleDeleteMemory} style="delete">
             Delete
           </Button>
-          <Button onClick={updateMemory}>
+          <Button onClick={handleUpdateMemory}>
             Update
           </Button>
         </div>

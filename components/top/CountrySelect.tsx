@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Select, { StylesConfig } from "react-select";
-import { CountryOption } from '@/app/hooks/types';
+import { CountryOption } from '@/types';
 import Button from "@/components/layouts/Button";
 
 const customStyles: StylesConfig<CountryOption, false> = {
@@ -72,13 +72,12 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedCountryOption, se
       setError(null);
       handleSubmit("select", "edit");
     } else {
-      console.error("No country selected");
       setError('Please select a country');
     }
   };
 
   return (
-    <div className='w-full max-w-screen-sm mx-auto flex justify-between gap-2'>
+    <div className='w-full flex justify-between gap-2'>
       {error && <p className='text-red-500'>{error}</p>}
       <Select
         options={countryOptions}

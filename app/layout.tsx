@@ -1,6 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Header from "@/components/layouts/Header";
+import { MemoriesProvider } from "@/app//context/MemoriesProvider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -23,10 +24,12 @@ export default function RootLayout({
         <link rel="icon" href="/images/favicon.ico" />
       </head>
       <body className="bg-background text-foreground font-barlow">
-        <Header/>
-        <main className="max-w-screen-xl mx-auto min-h-screen flex flex-col items-center">
-          {children}
-        </main>
+        <MemoriesProvider>
+          <Header/>
+          <main className="max-w-screen-xl mx-auto min-h-screen flex flex-col items-center">
+            {children}
+          </main>
+        </MemoriesProvider>
       </body>
     </html>
   );

@@ -1,7 +1,9 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import MemoryManagerLayout from "@/components/memoryManager/MemoryManagerLayout";
+import MemoryManagerClient from "@/components/memoryManager/MemoryManagerClient";
+import { CountryData } from "@/types";
+import fetchCountryData from "@/app/hooks/useCountryData";
 
 export default async function MemoryManager() {
   const supabase = createClient();
@@ -14,9 +16,11 @@ export default async function MemoryManager() {
     return redirect("/login");
   }
 
+  const countryData: CountryData[] = await fetchCountryData() || [];
+
   return (
     <div className="w-full">
-      <MemoryManagerLayout />
+      <MemoryManagerClient countryData={countryData}/>
     </div>
   )
 }
