@@ -16,10 +16,8 @@ export const MemoriesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       // Remove memories from localStorage when not authenticated
       if (!session) {
-        if (memories !== null) {
-          setMemories(null);
-          localStorage.removeItem("memories");
-        }
+        setMemories(null);
+        localStorage.removeItem("memories");
         return;
       }
 
@@ -57,6 +55,12 @@ export const MemoriesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       authListener.subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (memories !== null) {
+      localStorage.setItem("memories", JSON.stringify(memories));
+    }
+  }, [memories]);
 
   return (
     <MemoriesContext.Provider value={{ memories, setMemories, getMemories }}>
