@@ -30,7 +30,9 @@ const TopClient: React.FC<TopClientProps> = ({ unCodesInDatabase, countryData })
       // selectedCountry is null if source is link
 
       // pass params
-      const selectedCountryParam = encodeURIComponent(JSON.stringify(selectedCountry));
+      const selectedCountryParam = selectedCountry
+        ? encodeURIComponent(JSON.stringify(selectedCountry))
+        : ""; // Use empty string if source is link
       router.push(`/memoryManager?action=${action}&selectedCountry=${selectedCountryParam}`);
     } else {
       console.error("We failed to fetch country data");
