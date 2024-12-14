@@ -1,11 +1,9 @@
 import { Memory } from "@/types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
 // Fetch all memories by id
 export const fetchMemories = async (userId: string): Promise<Memory[]> => {
   try {
-    const res = await fetch(`${BASE_URL}/api/memories/read?user_id=${userId}`, {
+    const res = await fetch(`/api/memories/read?user_id=${userId}`, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -23,7 +21,7 @@ export const fetchMemories = async (userId: string): Promise<Memory[]> => {
 // Add a new memory
 export const addMemory = async (memoryData: Partial<Memory>): Promise<Memory | null> => {
   try {
-    const res = await fetch(`${BASE_URL}/api/memories/create`, {
+    const res = await fetch(`/api/memories/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(memoryData),
@@ -44,7 +42,7 @@ export const addMemory = async (memoryData: Partial<Memory>): Promise<Memory | n
 // Update an existing memory
 export const updateMemory = async (memoryData: Partial<Omit<Memory, "id">> & { id: number }): Promise<Memory | null> => {
   try {
-    const res = await fetch(`${BASE_URL}/api/memories/update`, {
+    const res = await fetch(`/api/memories/update`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(memoryData),
@@ -65,7 +63,7 @@ export const updateMemory = async (memoryData: Partial<Omit<Memory, "id">> & { i
 // Delete a memory
 export const deleteMemory = async (memoryId: number): Promise<boolean> => {
   try {
-    const res = await fetch(`${BASE_URL}/api/memories/delete?memory_id=${memoryId}`, {
+    const res = await fetch(`/api/memories/delete?memory_id=${memoryId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
