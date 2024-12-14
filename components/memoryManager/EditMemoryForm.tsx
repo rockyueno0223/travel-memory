@@ -8,6 +8,7 @@ import { Memory } from '@/types';
 import Button from "@/components/layouts/Button";
 import { deleteMemory, updateMemory } from '@/app/hooks/useMemories';
 import { useMemoriesContext } from '@/app/context/MemoriesContext';
+import { deleteImgFile } from '@/utils/supabase/storage';
 
 interface EditMemoryFormProps {
   memory: Memory;
@@ -15,19 +16,6 @@ interface EditMemoryFormProps {
 
 const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
   const { memories, setMemories } = useMemoriesContext();
-
-  const deleteImgFile = async () => {
-    const filePath = memory.img_url;
-    const { data, error } = await supabase
-      .storage
-      .from('travel-memory')
-      .remove([filePath]);
-    if (error) {
-      console.error(`Fail to delete image:`, error);
-    } else {
-      console.log('Image file deleted successfully');
-    }
-  }
 
   const handleUpdateMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -65,7 +53,13 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
         if (!isDeleted) {
           throw new Error('Failed to delete memory');
         }
-        await deleteImgFile();
+
+        try {
+          await deleteImgFile(memory.img_url);
+        } catch (imageDeleteError) {
+          console.error('Image deletion failed, but proceed delete action', imageDeleteError);
+        }
+        // Proceed with memory deletion even if image deletion fails
 
         if (memories) {
           setMemories(
