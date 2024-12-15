@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/utils/supabase/client';
 
 export async function PUT(req: Request) {
-  const { id, comment } = await req.json();
+  const { id, comment, img_url } = await req.json();
   const { data, error } = await supabase
     .from('memories')
-    .update({ comment })
+    .update({ comment, img_url })
     .eq('id', id)
     .select();
 

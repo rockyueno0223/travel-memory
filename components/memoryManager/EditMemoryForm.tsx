@@ -1,13 +1,13 @@
 'use client';
 
-import React from 'react';
-import { supabase } from '@/utils/supabase/client';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Memory } from '@/types';
 import Button from "@/components/layouts/Button";
 import { deleteMemory, updateMemory } from '@/app/hooks/useMemories';
 import { useMemoriesContext } from '@/app/context/MemoriesContext';
+import { deleteImgFile, uploadImgFile } from '@/utils/supabase/storage';
 
 interface EditMemoryFormProps {
   memory: Memory;
@@ -16,29 +16,42 @@ interface EditMemoryFormProps {
 const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
   const { memories, setMemories } = useMemoriesContext();
 
-  const deleteImgFile = async () => {
-    const filePath = memory.img_url;
-    const { data, error } = await supabase
-      .storage
-      .from('travel-memory')
-      .remove([filePath]);
-    if (error) {
-      console.error(`Fail to delete image:`, error);
-    } else {
-      console.log('Image file deleted successfully');
+  const [newImage, setNewImage] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setNewImage(reader.result as string);
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const handleUpdateMemory = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget.closest('form') as HTMLFormElement);
+      const image = formData.get('edit-memory-form-image') as File;
       const comment = formData.get('edit-memory-form-comment') as string || null;
       if (!comment) return;
 
       const id = memory.id;
+      let imageUrl: string | null = memory.img_url;
 
-      const updatedMemory = await updateMemory({ id, comment });
+      if (image) {
+        try {
+          // Delete old image
+          await deleteImgFile(memory.img_url);
+          // Upload new image
+          imageUrl = await uploadImgFile(image);
+          if (!imageUrl) throw new Error;
+        } catch (error) {
+          console.error('Image update failed', error);
+          return;
+        }
+      }
+
+      const updatedMemory = await updateMemory({ id, comment, img_url: imageUrl });
       if (!updatedMemory) {
         throw new Error('Failed to update memory');
       }
@@ -48,6 +61,13 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
           memories.map(memory => memory.id === id ? updatedMemory : memory)
         );
       }
+
+      // Clear image input value
+      const imageInput = document.querySelector<HTMLInputElement>("#edit-memory-form-image");
+      if (imageInput) imageInput.value = "";
+
+      setNewImage(null);
+
       toast.success('Update memory success!');
     } catch (error) {
       console.error(error);
@@ -65,7 +85,13 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
         if (!isDeleted) {
           throw new Error('Failed to delete memory');
         }
-        await deleteImgFile();
+
+        try {
+          await deleteImgFile(memory.img_url);
+        } catch (imageDeleteError) {
+          console.error('Image deletion failed, but proceed delete action', imageDeleteError);
+        }
+        // Proceed with memory deletion even if image deletion fails
 
         if (memories) {
           setMemories(
@@ -82,9 +108,18 @@ const EditMemoryForm: React.FC<EditMemoryFormProps> = ({ memory }) => {
 
   return (
     <form className='w-full max-w-sm flex-none border p-6'>
-      <div className='w-full'>
+      <div className='w-full flex flex-col items-center gap-2'>
+        <input
+          type="file"
+          name="edit-memory-form-image"
+          id="edit-memory-form-image"
+          onChange={handleImageChange}
+        />
         <img
-          src={`https://eknieixncpvuirnsuisj.supabase.co/storage/v1/object/public/travel-memory/${memory.img_url}`}
+          src={newImage
+            ? newImage
+            : `https://eknieixncpvuirnsuisj.supabase.co/storage/v1/object/public/travel-memory/${memory.img_url}`
+          }
           alt="Memory Photo"
           className='w-full h-auto max-h-[576px] mx-auto object-contain'
         />

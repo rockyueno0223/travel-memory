@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Button from "@/components/layouts/Button";
 import { addMemory } from '@/app/hooks/useMemories';
 import { useMemoriesContext } from '@/app/context/MemoriesContext';
+import { uploadImgFile } from '@/utils/supabase/storage';
 
 interface MemoryFormProps {
   unCode: string;
@@ -26,25 +27,11 @@ const MemoryForm: React.FC<MemoryFormProps> = ({ unCode }) => {
     }
   };
 
-  const uploadImgFile = async (image: FormDataEntryValue) => {
-    const imgPath = `memory_${Date.now()}`;
-    const { data, error } = await supabase
-      .storage
-      .from('travel-memory')
-      .upload(imgPath, image);
-
-    if (error) {
-      console.error(`Fail to upload image:`, error);
-      return null
-    }
-    return imgPath;
-  }
-
   const createMemory = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget);
-      const image = formData.get('memory-form-image');
+      const image = formData.get('memory-form-image') as File;
       const comment = formData.get('memory-form-comment') as string;
 
       if (image) {
